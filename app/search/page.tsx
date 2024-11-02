@@ -45,7 +45,7 @@ const SearchPage: React.FC = () => {
               rel="noopener noreferrer"
               className="text-blue-500 hover:underline"
             >
-              View on npm
+              View on npm안녕
             </a>
           </li>
         ))}
