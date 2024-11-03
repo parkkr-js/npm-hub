@@ -1,33 +1,16 @@
-/*
-npm install eslint-config-airbnb eslint-plugin-react eslint-plugin-jsx-a11y eslint-plugin-prettier eslint-config-prettier prettier --save-dev
-*/
 {
   "extends": [
-    "next/core-web-vitals", // Next.js 성능 최적화
-    "next/typescript", // TypeScript 규칙
-    //"airbnb", // Airbnb 스타일 가이드
-    "prettier" // Prettier와 ESLint 충돌 방지
+    "airbnb",
+    "airbnb-typescript",
+    "next/core-web-vitals"
   ],
-  "plugins": [
-    "react", // React 관련 규칙
-    "jsx-a11y", // 접근성 규칙 추가
-    "prettier" // Prettier와 통합
-  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["prettier"],
   "rules": {
-    "@typescript-eslint/no-explicit-any": "error", // any 사용 금지
-    "prettier/prettier": ["error"], // Prettier 규칙을 ESLint 에러로 처리
-    "react/jsx-props-no-spreading": "off", // JSX에서 props 확장 허용 (Airbnb에서 기본 금지)
-    "react/react-in-jsx-scope": "off", // React 17 이상에서는 필요 없으므로 비활성화
-    "jsx-a11y/anchor-is-valid": "warn", // 올바른 앵커 태그 사용 (접근성 규칙)
-    "react/jsx-filename-extension": [
-      "warn",
-      { "extensions": [".jsx", ".tsx"] } // JSX를 .tsx 파일에서 허용
-    ],
-    "semi": ["error", "always"], // 세미콜론 항상 사용
-    "quotes": ["error", "double"], // 문자열은 항상 double quote 사용
-    "indent": ["error", 2], // 들여쓰기는 2칸으로 고정
-    "no-unused-vars": "warn", // 사용되지 않은 변수 경고 처리
-    "react-hooks/rules-of-hooks": "error", // 훅 규칙 강제
-    "react-hooks/exhaustive-deps": "warn" // 의존성 배열 완전성 확인
+   
+    // "@typescript-eslint/indent": "off"
   }
 }

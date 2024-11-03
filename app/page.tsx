@@ -1,4 +1,4 @@
-//app/page.tsx
+// app/page.tsx
 import Link from "next/link";
 
 export default function Page() {

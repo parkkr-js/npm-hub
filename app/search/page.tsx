@@ -1,11 +1,12 @@
-// app/search/page.tsx
-"use client";
+'use client';
 
-import { useState } from "react";
-import SearchBar from "@/components/SearchBar";
-import { searchPackages, PackageData } from "@/lib/api";
+import { useState } from 'react';
+import SearchBar from '@/components/SearchBar';
+import { searchPackages, PackageData } from '@/lib/api';
+import { useRouter } from 'next/navigation';
 
-const SearchPage: React.FC = () => {
+function SearchPage() {
+  const router = useRouter();
   const [packages, setPackages] = useState<PackageData[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -15,16 +16,20 @@ const SearchPage: React.FC = () => {
     setError(null);
     try {
       const result = await searchPackages(query);
+      console.log('****Search result: ', result);
       setPackages(result.objects.map((obj) => obj.package));
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("An unknown error occurred.");
-      }
+      setError(
+        err instanceof Error ? err.message : 'An unknown error occurred.',
+      );
     } finally {
       setLoading(false);
     }
+  };
+
+  const handlePackageClick = (packageName: string) => {
+    const encodedPackageName = encodeURIComponent(packageName); // URL 인코딩
+    router.push(`/search/${encodedPackageName}`);
   };
 
   return (
@@ -34,24 +39,28 @@ const SearchPage: React.FC = () => {
       {error && <p className="mt-4 text-red-600">{error}</p>}
       <ul className="mt-6 space-y-4 w-full max-w-lg">
         {packages.map((pkg) => (
-          <li key={pkg.name} className="p-4 bg-gray-100 rounded-md shadow">
+          <li
+            key={pkg.name}
+            role="button"
+            tabIndex={0}
+            className="p-4 bg-gray-100 rounded-md shadow cursor-pointer"
+            onClick={() => handlePackageClick(pkg.name)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') handlePackageClick(pkg.name);
+            }}
+          >
             <h3 className="text-xl font-semibold">
-              {pkg.name} - {pkg.version}
+              {pkg.name}
+              {' '}
+              -
+              {pkg.version}
             </h3>
             <p className="text-gray-700">{pkg.description}</p>
-            <a
-              href={pkg.links.npm}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 hover:underline"
-            >
-              View on npm안녕
-            </a>
           </li>
         ))}
       </ul>
     </div>
   );
-};
+}
 
 export default SearchPage;

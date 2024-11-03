@@ -1,18 +1,27 @@
-// components/SearchBar.tsx
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+/* components/SearchBar.tsx */
+
+import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
-  const [query, setQuery] = useState("");
+function SearchBar({ onSearch }: SearchBarProps) {
+  const [query, setQuery] = useState('');
 
   const handleSearch = () => {
-    if (query.trim()) {
-      onSearch(query);
+    const trimmedQuery = query.trim();
+    if (trimmedQuery) {
+      onSearch(trimmedQuery);
+    }
+    console.log('****Search for: ', trimmedQuery);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearch();
     }
   };
 
@@ -24,6 +33,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={handleKeyPress}
           placeholder="Search for npm packages..."
           className="flex-1 p-4 text-lg border border-gray-300 rounded"
         />
@@ -36,6 +46,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
       </div>
     </div>
   );
-};
+}
 
 export default SearchBar;
