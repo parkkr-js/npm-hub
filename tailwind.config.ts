@@ -90,14 +90,7 @@ const config: Config = {
         '2xl': 'var(--size-2xl)',
         '3xl': 'var(--size-3xl)',
       },
-      padding: {
-        1: 'var(--spacing-1)',
-        2: 'var(--spacing-2)',
-        3: 'var(--spacing-3)',
-        4: 'var(--spacing-4)',
-        6: 'var(--spacing-6)',
-        8: 'var(--spacing-8)',
-      },
+
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',

@@ -10,7 +10,7 @@ interface SearchBarProps {
 }
 import { useRouter } from 'next/navigation';
 
-function SearchBar({ onSearch, initialQuery = '' }: SearchBarProps) {
+function SearchBarSmall({ onSearch, initialQuery = '' }: SearchBarProps) {
   const [query, setQuery] = useState(initialQuery); // 초기값 설정
   const router = useRouter();
   const handleSearch = () => {
@@ -32,31 +32,37 @@ function SearchBar({ onSearch, initialQuery = '' }: SearchBarProps) {
   }, [initialQuery]);
 
   return (
-    <div className=" w-[805px] flex flex-col items-center space-y-4 gap-7">
+    <div
+      className=" w-[805px]
+    flex"
+    >
       <p
         className="text-primary-60
-      
-       w-[646px] 
-       text-[96px] 
-       tracking-[1.96px]
+       w-[400px]
+       h-[53px] 
+       text-[45.628px] 
+       tracking-[0.853px]
        font-semibold
        leading-[normal]
        font-made-tommy
        text-center 
-       cursor-pointer
+       mt-[5px]
+        cursor-pointer
        "
         onClick={() => router.push('/')}
       >
         MAIN LOGO
       </p>
-      <div className=" flex w-full items-center">
+      <div className=" flex w-full">
         <Input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyPress}
           placeholder="Search for npm packages..."
-          className="w-full h-[55px] bg-secondary-90 border-2 border-solid border-secondary-70  rounded-[27.5px]
+          className="
+  
+          w-full h-[55px] bg-secondary-90 border-2 border-solid border-secondary-70  rounded-[27.5px]
         text-white/[0.38]
          font-pretendard text-[20px] 
          font-medium leading-normal
@@ -64,11 +70,15 @@ function SearchBar({ onSearch, initialQuery = '' }: SearchBarProps) {
          pt-[15px]
          pb-[16px]
          pr-[55px]
+     
          "
         />
         <Button
           onClick={handleSearch}
-          className="absolute ml-[741px] 
+          className="
+          absolute
+          mt-[10px]
+          ml-[481px]
           cursor-pointer
               bg-transparent     // 배경 제거
     hover:bg-transparent  // 호버시 배경 제거
@@ -91,4 +101,4 @@ function SearchBar({ onSearch, initialQuery = '' }: SearchBarProps) {
   );
 }
 
-export default SearchBar;
+export default SearchBarSmall;
