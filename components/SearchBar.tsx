@@ -67,7 +67,7 @@ function SearchBar({ onSearch }: SearchBarProps) {
     border-none       // 테두리 제거
     shadow-none      // 그림자 제거
         "
-          variant="ghost" // 기본 버튼 스타일 제거
+          variant="ghost" // 기본버튼 스타일 제거
         >
           <Image
             src={searchIcon} // 돋보기 이미지 경로
