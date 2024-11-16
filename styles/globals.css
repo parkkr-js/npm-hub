@@ -32,6 +32,30 @@ body {
 
 @layer base {
   :root {
+    /* Primary Blue */
+    --primary-100: 221 100% 7%; /* #001141 */
+    --primary-90: 221 100% 21%; /* #001d6c */
+    --primary-80: 221 100% 31%; /* #002d9c */
+    --primary-70: 221 100% 41%; /* #0043ce */
+    --primary-60: 217 100% 53%; /* #0f62fe */
+    --primary-50: 217 100% 64%; /* #4589ff */
+    --primary-40: 217 100% 74%; /* #78a9ff */
+    --primary-30: 217 100% 82%; /* #a6c8ff */
+    --primary-20: 217 100% 91%; /* #d0e2ff */
+    --primary-10: 217 100% 97%; /* #edf5ff */
+
+    /* Secondary Black */
+    --secondary-100: 0 0% 9%; /* #161616 */
+    --secondary-90: 0 0% 15%; /* #262626 */
+    --secondary-80: 0 0% 22%; /* #393939 */
+    --secondary-70: 0 0% 32%; /* #525252 */
+    --secondary-60: 0 0% 44%; /* #6f6f6f */
+    --secondary-50: 0 0% 55%; /* #8d8d8d */
+    --secondary-40: 0 0% 66%; /* #a8a8a8 */
+    --secondary-30: 0 0% 78%; /* #c6c6c6 */
+    --secondary-20: 0 0% 88%; /* #e0e0e0 */
+    --secondary-10: 0 0% 96%; /* #f4f4f4 */
+
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
@@ -57,6 +81,22 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+
+    /* sizes */
+    --size-xs: 0.5rem; /* 8px */
+    --size-sm: 0.75rem; /* 12px */
+    --size-base: 1rem; /* 16px */
+    --size-lg: 1.25rem; /* 20px */
+    --size-xl: 1.5rem; /* 24px */
+    --size-2xl: 2rem; /* 32px */
+    --size-3xl: 2.5rem; /* 40px */
+
+    --spacing-1: 0.25rem; /* 4px */
+    --spacing-2: 0.5rem; /* 8px */
+    --spacing-3: 0.75rem; /* 12px */
+    --spacing-4: 1rem; /* 16px */
+    --spacing-6: 1.5rem; /* 24px */
+    --spacing-8: 2rem; /* 32px */
   }
   .dark {
     --background: 240 10% 3.9%;

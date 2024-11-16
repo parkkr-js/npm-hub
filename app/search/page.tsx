@@ -4,6 +4,7 @@ import { useState } from 'react';
 import SearchBar from '@/components/SearchBar';
 import { searchPackages, PackageData } from '@/lib/api';
 import { useRouter } from 'next/navigation';
+import ShowPopular from '@/components/ShowPopulat';
 
 function SearchPage() {
   const router = useRouter();
@@ -33,7 +34,7 @@ function SearchPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
+    <div className="flex flex-col items-center mt-36 min-h-screen p-4">
       <SearchBar onSearch={handleSearch} />
       {loading && <p className="mt-4 text-blue-600">Loading...</p>}
       {error && <p className="mt-4 text-red-600">{error}</p>}
@@ -50,15 +51,13 @@ function SearchPage() {
             }}
           >
             <h3 className="text-xl font-semibold">
-              {pkg.name}
-              {' '}
-              -
-              {pkg.version}
+              {pkg.name} -{pkg.version}
             </h3>
             <p className="text-gray-700">{pkg.description}</p>
           </li>
         ))}
       </ul>
+      <ShowPopular />
     </div>
   );
 }
