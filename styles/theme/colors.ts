@@ -11,6 +11,7 @@ const colors = {
     20: '#d0e2ff',
     10: '#edf5ff',
   },
+
   secondary: {
     100: '#161616',
     90: '#262626',
@@ -32,6 +33,9 @@ const colors = {
     disabled2: '#CDCDCD',
   },
   alert: {
+    pink: '#FF87B9',
+    blue: '#3B82F6',
+    purple: '#8B5CF6',
     red: '#DA1E28',
     orange: '#FF832C',
     yellow: '#FEDC69',

@@ -16,6 +16,20 @@ export interface PopularPackageInfo {
   };
 }
 
+export interface AutocompletePackageInfo {
+  package: {
+    name: string;
+    description: string;
+    date: string;
+    downloadCount: number;
+  };
+  score: {
+    detail: {
+      popularity: number;
+    };
+  };
+}
+
 export interface PackageInfo {
   package: {
     name: string;
