@@ -1,136 +1,18 @@
 @tailwind base;
-/* 
- 기본 CSS 리셋: Tailwind가 제공하는 기본적인 CSS 리셋 스타일을 포함시킴.
- 이를 통해 브라우저 간의 스타일 차이를 최소화. 
- 일반적인 브라우저의 기본 스타일을 제거하고, Tailwind의 기반 스타일을 적용.
- */
 @tailwind components;
-/* 
- 컴포넌트 스타일 정의: Tailwind에서 제공하는 기본 컴포넌트 스타일을 포함시킴.
- 이는 버튼, 폼, 카드 등과 같은 재사용 가능한 UI 요소들의 기본 스타일을 정의. 
- */
 @tailwind utilities;
-/* 
- 유틸리티 클래스: Tailwind의 유틸리티 클래스들을 활성화.
- text-center, bg-gray-100, p-4 등과 같은 클래스를 사용하여 빠르게 스타일링 가능.
- */
 
-html,
-body {
-  height: 100%;
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}
-
-@layer base {
-  :root {
-    /* Primary Blue */
-    --primary-100: 221 100% 7%; /* #001141 */
-    --primary-90: 221 100% 21%; /* #001d6c */
-    --primary-80: 221 100% 31%; /* #002d9c */
-    --primary-70: 221 100% 41%; /* #0043ce */
-    --primary-60: 217 100% 53%; /* #0f62fe */
-    --primary-50: 217 100% 64%; /* #4589ff */
-    --primary-40: 217 100% 74%; /* #78a9ff */
-    --primary-30: 217 100% 82%; /* #a6c8ff */
-    --primary-20: 217 100% 91%; /* #d0e2ff */
-    --primary-10: 217 100% 97%; /* #edf5ff */
-
-    /* Secondary Black */
-    --secondary-100: 0 0% 9%; /* #161616 */
-    --secondary-90: 0 0% 15%; /* #262626 */
-    --secondary-80: 0 0% 22%; /* #393939 */
-    --secondary-70: 0 0% 32%; /* #525252 */
-    --secondary-60: 0 0% 44%; /* #6f6f6f */
-    --secondary-50: 0 0% 55%; /* #8d8d8d */
-    --secondary-40: 0 0% 66%; /* #a8a8a8 */
-    --secondary-30: 0 0% 78%; /* #c6c6c6 */
-    --secondary-20: 0 0% 88%; /* #e0e0e0 */
-    --secondary-10: 0 0% 96%; /* #f4f4f4 */
-
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 10% 3.9%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
-
-    /* sizes */
-    --size-xs: 0.5rem; /* 8px */
-    --size-sm: 0.75rem; /* 12px */
-    --size-base: 1rem; /* 16px */
-    --size-lg: 1.25rem; /* 20px */
-    --size-xl: 1.5rem; /* 24px */
-    --size-2xl: 2rem; /* 32px */
-    --size-3xl: 2.5rem; /* 40px */
-
-    --spacing-1: 0.25rem; /* 4px */
-    --spacing-2: 0.5rem; /* 8px */
-    --spacing-3: 0.75rem; /* 12px */
-    --spacing-4: 1rem; /* 16px */
-    --spacing-6: 1.5rem; /* 24px */
-    --spacing-8: 2rem; /* 32px */
-  }
-  .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

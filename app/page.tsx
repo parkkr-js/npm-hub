@@ -1,25 +1,27 @@
-'use client';
+// app/page.tsx
+import { Suspense } from 'react';
+import SearchBar from '@/components/client/SearchBar';
+import PopularPackages from '@/components/server/PopularPackages';
+import Background from '@/components/client/Background';
+import { PackageCardSkeleton } from '@/components/skeletons/PackageCardSkeleton';
 
-import { useState } from 'react';
-import SearchBar from '@/components/SearchBar';
-import ShowPopular from '@/components/ShowPopular';
-import { useRouter } from 'next/navigation';
-
-function MainPage() {
-  const router = useRouter();
-
-  const handleSearch = (query: string) => {
-    if (query.trim()) {
-      router.push(`/search/${encodeURIComponent(query)}`); // URL 구조 변경
-    }
-  };
-
+export default function HomePage() {
   return (
-    <div className="flex flex-col items-center mt-36 min-h-screen p-4">
-      <SearchBar onSearch={handleSearch} />
-      <ShowPopular className="mt-[91px]" />
-    </div>
+    <main className="min-h-screen relative">
+      <Background />
+      <div className="container mx-auto px-4 py-8 relative z-10">
+        <h1 className="text-5xl font-bold text-center text-primary-60 mb-12">MAIN LOGO</h1>
+        <SearchBar />
+        <section className="mt-16">
+          <h2 className="text-3xl font-semibold text-surface-white mb-2">Most popular packages</h2>
+          <p className="text-surface-medium mb-8">
+            Some of the most downloaded packages over the past 60 days
+          </p>
+          <Suspense fallback={<PackageCardSkeleton count={4} />}>
+            <PopularPackages />
+          </Suspense>
+        </section>
+      </div>
+    </main>
   );
 }
-
-export default MainPage;
