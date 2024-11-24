@@ -2,7 +2,7 @@
 import { Suspense } from 'react';
 import SearchBar from '@/components/client/SearchBar';
 import PopularPackages from '@/components/server/PopularPackages';
-import Background from '@/components/client/Background';
+import Background from '@/components/server/Background';
 import { PackageCardSkeleton } from '@/components/skeletons/PackageCardSkeleton';
 import AutoCompletePackage from '@/components/client/AutoCompletePackage';
 export default function HomePage() {
