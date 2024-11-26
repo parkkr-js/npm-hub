@@ -3,14 +3,17 @@
 import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
-import { searchQueryState } from '@/store/atoms/search';
-import { useRef, Suspense } from 'react';
-import AutoCompletePackage from './AutoCompletePackage';
+import { searchQueryState, searchFixedQueryState } from '@/store/atoms/search';
+import { useRef, Suspense, useState } from 'react';
+import AutoCompletePackage from './autocomplete/AutoCompletePackage';
+import { useRouter } from 'next/navigation';
 
 export default function SearchBarWithAutoComplete() {
   const setSearchQuery = useSetRecoilState(searchQueryState);
-  const searchQuery = useRecoilValue(searchQueryState);
+  const setSearchFixedQuery = useSetRecoilState(searchFixedQueryState);
+  const [word, setWord] = useState<string>('');
   const debounceTimer = useRef<NodeJS.Timeout>();
+  const router = useRouter();
 
   const handleSearch = (value: string) => {
     if (debounceTimer.current) {
@@ -19,7 +22,15 @@ export default function SearchBarWithAutoComplete() {
 
     debounceTimer.current = setTimeout(() => {
       setSearchQuery(value);
+      setWord(value);
     }, 300);
+  };
+
+  const handleClick = () => {
+    setSearchFixedQuery(word.trim());
+    setSearchQuery('');
+
+    router.push(`/result/${encodeURIComponent(word.trim())}`);
   };
 
   return (
@@ -31,7 +42,10 @@ export default function SearchBarWithAutoComplete() {
         onChange={(e) => handleSearch(e.target.value)}
         spellCheck={false}
       />
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-surface-medium h-5 w-5" />
+      <Search
+        onClick={handleClick}
+        className="absolute left-3 top-1/2 -translate-y-1/2 text-surface-medium h-5 w-5"
+      />
     </div>
   );
 }

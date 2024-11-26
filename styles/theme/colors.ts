@@ -41,5 +41,14 @@ const colors = {
     yellow: '#FEDC69',
     green: '#24A147',
   },
+  badge: {
+    badge1: '#FFE435',
+    badge2: '#82D750',
+    badge3: '#D167FF',
+    badge4: '#3ABED2ED',
+  },
+  font: {
+    white: '#F6F6F6',
+  },
 } as const;
 export default colors;

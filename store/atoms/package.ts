@@ -1,13 +1,13 @@
 import { atom } from 'recoil';
-import { PackageInfo } from '@/types/package';
-import { AutocompletePackageInfo } from '@/types/package';
+import { packageInfo } from '@/types/package';
+import { autocompletePackageInfo } from '@/types/package';
 
-export const popularPackagesState = atom<PackageInfo[]>({
+export const popularPackagesState = atom<packageInfo[]>({
   key: 'popularPackagesState',
   default: [],
 });
 
-export const autocompletePackagesState = atom<AutocompletePackageInfo[]>({
+export const autocompletePackagesState = atom<autocompletePackageInfo[]>({
   key: 'autocompletePackagesState',
   default: [],
 });
