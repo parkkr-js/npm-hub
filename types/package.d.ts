@@ -1,12 +1,6 @@
-/*
-PopularPackageInfo: 인기 패키지 정보를 담을 interface
-AutocompletePackageInfo: 자동완성 패키지 정보를 담을 interface
-AutocompletePackageInfoWithBadgesInfo: 자동완성 패키지 정보를 담은 interface에 뱃지 별정 보를 추가한 interface
-searchPackagesInfo: 검색 결과를 담을 interface
-searchPackageWithBadges: 검색 결과를 담은 interface에 뱃지 별 정보를 추가한 interface
-*/
+// types/package.d.ts
 
-export interface popularPackageInfo {
+export interface PopularPackageInfo {
   name: string;
   description: string;
   score: {
@@ -24,7 +18,14 @@ export interface popularPackageInfo {
   };
 }
 
-export interface autocompletePackageInfo {
+export interface PackageBadges {
+  isExactMatch: boolean;
+  isMostDownloaded: boolean;
+  isMostRecent: boolean;
+  isMostPopular: boolean;
+}
+
+export interface SuggestionPackageInfo {
   package: {
     name: string;
     description: string;
@@ -36,18 +37,11 @@ export interface autocompletePackageInfo {
       popularity: number;
     };
   };
+  badges?: PackageBadges;
 }
 
-export interface autocompletePackageInfoWithBadgesInfo extends autocompletePackageInfo {
-  badges: {
-    isExactMatch: boolean;
-    isMostDownloaded: boolean;
-    isMostRecent: boolean;
-    isMostPopular: boolean;
-  };
-}
-
-export interface searchPackagesInfo {
+// 검색 결과 패키지 정보
+export interface SearchResultPackageInfo {
   package: {
     name: string;
     version: string;
@@ -71,18 +65,9 @@ export interface searchPackagesInfo {
       popularity: number;
     };
   };
+  badges?: PackageBadges;
 }
-
-export interface searchPackagesWithBadgesInfo extends searchPackagesInfo {
-  badges: {
-    isExactMatch: boolean;
-    isMostDownloaded: boolean;
-    isMostRecent: boolean;
-    isMostPopular: boolean;
-  };
-}
-
-export interface packageInfo {
+export interface PackageInfo {
   package: {
     name: string;
     scope: 'unscoped' | string;
