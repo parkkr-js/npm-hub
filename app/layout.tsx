@@ -1,7 +1,8 @@
+// app/layout.tsx
 import type { Metadata } from 'next';
-import ClientRoot from '@/components/ClientRoot';
 import '@/styles/globals.css';
-import Background from '@/components/layout/Background';
+import ClientLayout from '@/components/layout/ClientLayout';
+import ClientRoot from '@/components/ClientRoot';
 
 export const metadata: Metadata = {
   title: 'NPM Hub',
@@ -13,7 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <ClientRoot>
-          <Background>{children}</Background>
+          <ClientLayout>{children}</ClientLayout>
         </ClientRoot>
       </body>
     </html>
