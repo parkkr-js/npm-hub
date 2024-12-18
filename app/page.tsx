@@ -6,7 +6,7 @@ import { PackageCardSkeleton } from '@/components/skeletons/PopularPackageCardSk
 
 export default function HomePage() {
   return (
-    <div className="container mx-auto py-8 relative z-10">
+    <div className="container mx-auto py-8 relative">
       <section className="mt-40">
         <h2 className="text-3xl font-semibold text-surface-white mb-2">Most popular packages</h2>
         <p className="text-surface-medium mb-8">
