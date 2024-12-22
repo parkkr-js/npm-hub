@@ -1,6 +1,6 @@
 // app/search/[query]/page.tsx
 import { Suspense } from 'react';
-import { getSearchResultPackages } from '@/lib/api/npm';
+import { getSearchResultPackages } from '@/app/api/npm';
 import { SearchResultsWrapper } from '@/components/search-results/SearchResultsWrapper';
 import { FilterSidebar } from '@/components/search-results/FilterSidebar';
 import { KeywordBox } from '@/components/search-results/KeywordBox';

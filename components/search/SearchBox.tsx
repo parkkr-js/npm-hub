@@ -5,7 +5,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
 import { searchQueryAtom, suggestionsAtom } from '@/store/atoms';
-import { getSuggestionPackages } from '@/lib/api/npm';
+import { getSuggestionPackages } from '@/app/api/npm';
 import { useRouter } from 'next/navigation';
 
 export default function SearchBox() {

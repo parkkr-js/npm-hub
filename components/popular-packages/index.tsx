@@ -1,4 +1,4 @@
-import { getPopularPackages } from '@/lib/api/npm';
+import { getPopularPackages } from '@/app/api/npm';
 import PackageCarousel from '@/components/popular-packages/PopularPackageCarousel';
 
 export default async function PopularPackages() {

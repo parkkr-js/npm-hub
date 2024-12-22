@@ -5,6 +5,7 @@ import { Keywords } from '@/components/search-results/Keywords';
 import { Badge } from '@/components/ui/Badge';
 import { SearchResultPackageInfo } from '@/types/package';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface SearchResultItemProps {
   result: SearchResultPackageInfo;
@@ -18,7 +19,12 @@ export function SearchResultItem({ result }: SearchResultItemProps) {
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <h2 className="text-xl font-medium text-primary-50">{pkg.name}</h2>
+            <Link
+              href={`/search/detail/${pkg.name}`}
+              className="hover:opacity-80 transition-opacity"
+            >
+              <h2 className="text-xl font-medium text-primary-50">{pkg.name}</h2>
+            </Link>
             <span className="text-sm text-surface-medium">v{pkg.version}</span>
             {badges?.isExactMatch && <Badge variant="exactMatch">exact match</Badge>}
             {badges?.isMostDownloaded && <Badge variant="downloads">most downloads</Badge>}
