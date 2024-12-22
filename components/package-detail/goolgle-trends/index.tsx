@@ -1,9 +1,7 @@
 // components/package-detail/google-trends/index.tsx
 'use client';
+
 import { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   LineChart,
   Line,
@@ -11,117 +9,100 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
+  Legend,
 } from 'recharts';
-import type { TrendData } from './types';
+import { Card } from '@/components/ui/card';
+import { GoogleTrendsProps, TrendsData } from '@/types/google-trends';
 
-interface PackageGoogleTrendsProps {
-  packageName: string;
-}
+import { fetchGoogleTrends } from '@/app/api/google-trends/actions';
+import { GoogleTrendsSkeleton } from '@/components/skeletons/GoogleTrendsSkeleton';
+import { CustomTooltip } from '@/components/package-detail/goolgle-trends/CustomTooltip';
 
-export function PackageGoogleTrends({ packageName }: PackageGoogleTrendsProps) {
-  const [trendData, setTrendData] = useState<TrendData | null>(null);
-  const [loading, setLoading] = useState(true);
+export function GoogleTrends({ packageName }: GoogleTrendsProps) {
+  const [trendsData, setTrendsData] = useState<TrendsData | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchTrendData = async () => {
+    const loadTrendsData = async () => {
       try {
-        console.log('Fetching data for:', packageName); // 디버깅용
-
-        const response = await fetch('/api/google-trends', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            keyword: packageName,
-            category: 31,
-            startTime: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString(),
-          }),
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || 'Failed to fetch trend data');
-        }
-
-        const data = await response.json();
-        console.log('Received data:', data); // 디버깅용
-        setTrendData(data);
+        const data = await fetchGoogleTrends(packageName);
+        setTrendsData(data);
       } catch (err) {
-        console.error('Component Error:', err); // 자세한 에러 로깅
-        setError(err instanceof Error ? err.message : 'Failed to fetch trend data');
+        console.error('Error:', err);
+        setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchTrendData();
+    loadTrendsData();
   }, [packageName]);
 
   if (loading) {
-    return <div className="animate-pulse">Loading trends...</div>;
+    return <GoogleTrendsSkeleton />;
   }
 
-  if (error) {
-    return (
-      <Alert variant="destructive">
-        <AlertDescription>{error}</AlertDescription>
-      </Alert>
-    );
+  if (error || !trendsData || !trendsData.interest) {
+    return <div className="p-4 text-red-500">{error || 'No trend data available'}</div>;
   }
 
   return (
-    <Tabs defaultValue="interest">
-      <TabsList>
-        <TabsTrigger value="interest">Interest Over Time</TabsTrigger>
-        <TabsTrigger value="related">Related Topics</TabsTrigger>
-        <TabsTrigger value="queries">Related Queries</TabsTrigger>
-      </TabsList>
+    <div className="p-4 max-w-6xl mx-auto">
+      <Card className="p-6 mb-6">
+        <h2 className="text-xl font-semibold mb-2">Understanding Google Trends Scores</h2>
+        <p className="text-gray-600 mb-4">
+          Numbers represent relative search interest where 100 is the peak popularity for the term.
+          A value of 50 means it is half as popular, and 0 means insufficient data.
+        </p>
+      </Card>
 
-      <TabsContent value="interest">
-        <Card>
-          <CardHeader>
-            <CardTitle>Search Interest Over Time</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={400}>
-              <LineChart data={trendData?.interestOverTime}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="formattedTime" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="value" stroke="#8884d8" name={packageName} />
-              </LineChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-      </TabsContent>
+      <Card className="p-6">
+        <div className="h-[400px] w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart
+              data={trendsData.interest}
+              margin={{ top: 10, right: 30, left: 10, bottom: 30 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <XAxis
+                dataKey="formattedTime"
+                angle={-45}
+                textAnchor="end"
+                height={70}
+                tick={{ fontSize: 12 }}
+              />
+              <YAxis
+                domain={[0, 100]}
+                tick={{ fontSize: 12 }}
+                label={{
+                  value: 'Search Interest',
+                  angle: -90,
+                  position: 'insideLeft',
+                  style: { textAnchor: 'middle' },
+                }}
+              />
+              <Tooltip content={CustomTooltip} />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey={(d) => d.value[0]}
+                name="Interest"
+                stroke="#2563eb"
+                strokeWidth={2}
+                dot={false}
+                activeDot={{ r: 8 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
 
-      {/* Related Topics Tab */}
-      <TabsContent value="related">
-        <Card>
-          <CardHeader>
-            <CardTitle>Related Topics</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {trendData?.relatedTopics?.map((topic: any, index: number) => (
-                <div key={index} className="flex justify-between items-center">
-                  <span>{topic.topic.title}</span>
-                  <span className="text-sm text-muted-foreground">{topic.formattedValue}</span>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </TabsContent>
-
-      {/* Related Queries Tab */}
-      <TabsContent value="queries">{/* Similar to Related Topics tab */}</TabsContent>
-    </Tabs>
+        <div className="mt-4 text-sm text-gray-500 flex justify-between items-center">
+          <span>Data points: {trendsData.interest.length}</span>
+          <span>Last updated: {new Date().toLocaleDateString()}</span>
+        </div>
+      </Card>
+    </div>
   );
 }

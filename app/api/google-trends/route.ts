@@ -1,6 +1,7 @@
 // app/api/google-trends/route.ts
 import { NextResponse } from 'next/server';
 import googleTrends from 'google-trends-api';
+import { TrendsAPIResponse } from '@/types/google-trends';
 
 export async function GET(request: Request) {
   try {
@@ -18,22 +19,15 @@ export async function GET(request: Request) {
     };
 
     const interestData = await googleTrends.interestOverTime(options);
-    const parsedInterest = JSON.parse(interestData);
+    const parsedInterest = JSON.parse(interestData) as TrendsAPIResponse;
 
-    // 안전하게 데이터 추출
-    const response = {
-      interest: parsedInterest.default?.timelineData || [],
-    };
-
-    // 디버깅용 로그
-    console.log('API Response:', {
-      keyword,
-      dataPoints: response.interest.length,
+    return NextResponse.json({
+      interest: parsedInterest.default.timelineData,
     });
-
-    return NextResponse.json(response);
   } catch (error) {
-    console.error('Google Trends API Error:', error);
+    if (error instanceof Error) {
+      console.error('Google Trends API Error:', error.message);
+    }
     return NextResponse.json({ error: 'Failed to fetch trends data' }, { status: 500 });
   }
 }
