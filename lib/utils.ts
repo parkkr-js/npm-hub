@@ -3,7 +3,6 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { MD5 } from 'crypto-js';
-import { CacheItem, CacheOptions } from '@/types/common';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -91,66 +90,4 @@ export function getTimeAgo(date: string) {
   if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
   if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
   return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-}
-
-export class CacheManager<T> {
-  private cache: Map<string, CacheItem<T>>;
-  private maxSize: number;
-  private expiryTime: number;
-
-  constructor(options: CacheOptions = {}) {
-    this.cache = new Map();
-    this.maxSize = options.maxSize || 20;
-    this.expiryTime = options.expiryTime || 1000 * 60 * 5;
-  }
-
-  set(key: string, data: T): void {
-    this.cleanCache();
-
-    this.cache.set(key, {
-      data,
-      timestamp: Date.now(),
-    });
-
-    if (this.cache.size > this.maxSize) {
-      const oldestKey = Array.from(this.cache.keys())[0];
-      this.cache.delete(oldestKey);
-    }
-  }
-
-  get(key: string): T | null {
-    this.cleanCache();
-
-    const item = this.cache.get(key);
-    if (!item) return null;
-
-    if (Date.now() - item.timestamp > this.expiryTime) {
-      this.cache.delete(key);
-      return null;
-    }
-
-    return item.data;
-  }
-
-  has(key: string): boolean {
-    this.cleanCache();
-    return this.cache.has(key);
-  }
-
-  private cleanCache(): void {
-    const now = Date.now();
-    Array.from(this.cache.entries()).forEach(([key, value]) => {
-      if (now - value.timestamp > this.expiryTime) {
-        this.cache.delete(key);
-      }
-    });
-  }
-
-  clear(): void {
-    this.cache.clear();
-  }
-
-  size(): number {
-    return this.cache.size;
-  }
 }

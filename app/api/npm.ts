@@ -5,7 +5,7 @@ import type {
   SearchResultPackageInfo,
 } from '@/types/package';
 
-import { CacheManager } from '@/lib/utils';
+import { CacheManager } from '@/lib/cache';
 import axios from 'axios';
 
 const NPM_BASE_URL = process.env.NEXT_PUBLIC_NPM_REGISTRY_URL;
