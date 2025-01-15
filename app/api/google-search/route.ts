@@ -10,6 +10,7 @@ const COUNTRY_TO_LANG = {
   KR: 'lang_ko',
   US: 'lang_en',
   JP: 'lang_ja',
+  NZ: 'lang_en',
 };
 
 export async function GET(request: Request) {
@@ -42,6 +43,7 @@ export async function GET(request: Request) {
       num: '5',
       cr: `country${countryCode}`,
       lr: languageCode,
+      // dateRestrict: 'y1', // 최근 1년 결과만
       safe: 'active',
     };
 

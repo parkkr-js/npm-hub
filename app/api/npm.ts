@@ -192,3 +192,21 @@ export async function getSearchResultPackages(query: string): Promise<SearchResu
   searchResultsCache.set(query, fetchPromise);
   return fetchPromise;
 }
+
+export async function getPackageDetail(packageName: string): Promise<PackageInfo | null> {
+  try {
+    const response = await axios.get<PackageInfo>(`${NPM_BASE_URL}/${packageName}/latest`);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('NPM API Error:', {
+        message: error.message,
+        status: error.response?.status,
+        data: error.response?.data,
+      });
+    } else {
+      console.error('Unexpected error:', error);
+    }
+    return null;
+  }
+}

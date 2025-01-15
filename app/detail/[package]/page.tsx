@@ -1,5 +1,6 @@
 // app/detail/[package]/page.tsx
 import { GoogleTrends } from '@/components/package-detail/goolgle-trends';
+import { GoogleSearchResults } from '@/components/package-detail/google-search-results';
 import Markdown from '@/components/package-detail/mark-down';
 
 interface PageProps {
@@ -30,7 +31,9 @@ export default function PackageDetailPage({ params }: PageProps) {
       </div>
 
       {/* 추가 정보 영역 */}
-      <div className="p-4">{/* 부가 정보 컴포넌트들 */}</div>
+      <div className="p-4">
+        <GoogleSearchResults packageName={params.package} />
+      </div>
     </div>
   );
 }
