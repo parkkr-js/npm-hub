@@ -108,3 +108,32 @@ export interface PackageInfo {
   };
   searchScore: number;
 }
+
+//상세페이지 패키지 정보
+
+export interface DetailResultPackageInfo {
+  package: {
+    name: string;
+    version: string;
+    description: string;
+    keywords: string[];
+    date: string;
+    author: {
+      name: string;
+      email: string;
+      username?: string;
+    };
+    publisher: {
+      username: string;
+      email: string;
+    };
+    downloadCount: number;
+    googletrends: number;
+  };
+  score: {
+    final: number;
+    detail: {
+      popularity: number;
+    };
+  };
+}

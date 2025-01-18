@@ -9,6 +9,7 @@ export async function fetchGoogleTrends(packageName: string): Promise<TrendsData
   const cachedData = trendsCache.get(cacheKey);
 
   if (cachedData) {
+    console.log('Using cached trends data');
     return cachedData;
   }
 

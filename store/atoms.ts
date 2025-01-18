@@ -1,7 +1,11 @@
 // store/atoms.ts
 
 import { atom } from 'recoil';
-import { SuggestionPackageInfo, SearchResultPackageInfo } from '@/types/package';
+import {
+  SuggestionPackageInfo,
+  SearchResultPackageInfo,
+  DetailResultPackageInfo,
+} from '@/types/package';
 import { PopularPackageInfo } from '@/types/package';
 import { sortType } from '@/types/common';
 
@@ -22,6 +26,11 @@ export const suggestionsAtom = atom<SuggestionPackageInfo[]>({
 
 export const searchResultsAtom = atom<SearchResultPackageInfo[]>({
   key: 'searchResultsAtom',
+  default: [],
+});
+
+export const detailPackageAtom = atom<DetailResultPackageInfo[]>({
+  key: 'detailPackageAtom',
   default: [],
 });
 

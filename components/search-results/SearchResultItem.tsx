@@ -13,6 +13,7 @@ interface SearchResultItemProps {
 
 export function SearchResultItem({ result }: SearchResultItemProps) {
   const { package: pkg, badges } = result;
+  console.log(result);
 
   return (
     <div className="p-4 border-b border-secondary-80 animate-fadeIn">
