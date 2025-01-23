@@ -107,7 +107,7 @@ export function GoogleSearchResults({ packageName }: SearchResultsProps) {
                       />
                     </div>
                   ) : (
-                    <div className="w-24 h-24 bg-gray-100 flex items-center justify-center flex-shrink-0 rounded">
+                    <div className="w-3 h-4 bg-gray-100 flex items-center justify-center flex-shrink-0 rounded">
                       <ImageIcon size={32} />
                     </div>
                   )}

@@ -4,6 +4,7 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { getPublisherAvatarUrl } from '@/lib/utils';
 import { PopularPackageInfo } from '@/types/package';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function PopularPackageCarousel({ packages }: { packages: PopularPackageInfo[] }) {
   if (!packages || packages.length === 0) {
@@ -29,9 +30,12 @@ export default function PopularPackageCarousel({ packages }: { packages: Popular
             className="w-[300px] flex-none bg-secondary-90/50 border-surface-medium"
           >
             <CardHeader>
-              <p className="text-lg font-semibold text-primary-40">
+              <Link
+                href={`/detail/${encodeURIComponent(pkg.name)}`}
+                className="text-lg font-semibold text-primary-40"
+              >
                 {pkg.name || 'Unknown Package'}
-              </p>
+              </Link>
             </CardHeader>
             <CardContent>
               <p className="text-surface-white whitespace-normal">

@@ -202,13 +202,14 @@ export async function getSearchResultPackages(query: string): Promise<SearchResu
 export async function getPackageDetail(query: string): Promise<DetailResultPackageInfo[]> {
   const cachedData = detailPackgeCache.get(query);
   if (cachedData) {
+    console.log('Using cached package data');
     return cachedData;
   }
 
   const fetchPromise = (async () => {
     try {
       const response = await axios.get(
-        `${NPM_BASE_URL}${NPM_SEARCH_ENDPOINT}${encodeURIComponent(query)}&size=1&from=0`
+        `${NPM_BASE_URL}${NPM_SEARCH_ENDPOINT}${query}&size=1&from=0`
       );
 
       const mapPackageData = (item: PackageInfo, downloads: number = 0) => ({

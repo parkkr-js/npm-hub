@@ -18,9 +18,8 @@ export default async function PackageDetailPage({ params }: PageProps) {
       <div className="flex flex-col ml-48 w-auto">
         {/* 패키지 헤더 정보 영역 */}
 
-        <Suspense fallback={<div>Loading package...</div>}>
-          <DetailPackageWrapper initialResults={initialResults} />
-        </Suspense>
+        <DetailPackageWrapper initialResults={initialResults} />
+
         {/* Weekly download 현황 그래프 */}
         <div className="p-4">{/* Weekly download 컴포넌트 */}</div>
 

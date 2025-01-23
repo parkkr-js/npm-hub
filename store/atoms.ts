@@ -19,6 +19,10 @@ export const searchQueryAtom = atom<string>({
   default: '',
 });
 
+export const selectedKeywordAtom = atom<string | null>({
+  key: 'selectedKeywordAtom',
+  default: '',
+});
 export const suggestionsAtom = atom<SuggestionPackageInfo[]>({
   key: 'suggestionsAtom',
   default: [],
