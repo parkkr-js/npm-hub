@@ -1,12 +1,12 @@
 // app/api/google-search/route.ts
 import { NextResponse } from 'next/server';
 import { GoogleSearchItem } from '@/types/google-search';
-
+import { headers } from 'next/headers';
 const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
 const GOOGLE_CX_ID = process.env.GOOGLE_CX_ID;
 
 // 언어 코드 매핑
-const COUNTRY_TO_LANG = {
+const COUNTRY_TO_LANG: { [key: string]: string } = {
   KR: 'lang_ko',
   US: 'lang_en',
   JP: 'lang_ja',
@@ -16,8 +16,12 @@ const COUNTRY_TO_LANG = {
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const query = searchParams.get('q');
+    //const query = searchParams.get('q') || '';
 
+    const encodedQuery = searchParams.get('q') || '';
+    const query = decodeURIComponent(encodedQuery);
+
+    console.log('검색어:', query);
     if (!query) {
       return NextResponse.json({ error: 'Query parameter is required' }, { status: 400 });
     }
@@ -31,20 +35,27 @@ export async function GET(request: Request) {
     // const countryCode = headersList.get('x-vercel-ip-country') || 'KR'; // Vercel 배포 시
     // // const forwarded = headersList.get('forwarded') || ''; // 다른 호스팅의 경우
 
+    /*
     // 현재는 로컬 환경이므로 한국으로 고정
     const countryCode = 'KR';
     const languageCode = COUNTRY_TO_LANG[countryCode] || 'lang_ko';
+*/
 
+    const headersList = headers();
+    const countryCode = headersList.get('x-vercel-ip-country') || 'KR'; // Vercel 배포 시
+    const languageCode = COUNTRY_TO_LANG[countryCode] || 'lang_ko';
+    console.log('query:', query);
+    console.log('countryCode:', countryCode);
     const searchUrl = new URL('https://customsearch.googleapis.com/customsearch/v1');
     const params = {
       key: GOOGLE_API_KEY,
       cx: GOOGLE_CX_ID,
       q: query,
       num: '5',
-      cr: `country${countryCode}`,
+      safe: 'active',
+      gl: countryCode, // 'countryKR' 대신 'KR'처럼 국가 코드만 사용
       lr: languageCode,
       // dateRestrict: 'y1', // 최근 1년 결과만
-      safe: 'active',
     };
 
     Object.entries(params).forEach(([key, value]) => {
@@ -88,6 +99,8 @@ export async function GET(request: Request) {
         : undefined,
       datePublished: item.pagemap?.metatags?.[0]?.['article:published_time'] || null,
     }));
+
+    console.log('Formatted Results:', formattedResults);
 
     return NextResponse.json({
       items: formattedResults,

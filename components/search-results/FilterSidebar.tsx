@@ -3,18 +3,20 @@
 // components/search-results/FilterSidebar.tsx
 
 import { useSetRecoilState } from 'recoil';
-import { sortTypeAtom } from '@/store/atoms';
+import { sortTypeAtom, selectedKeywordAtom } from '@/store/atoms';
 import { sortType } from '@/types/common';
 import { useCallback } from 'react';
 
 export function FilterSidebar() {
   const setSortType = useSetRecoilState(sortTypeAtom);
+  const setSelectedKeyword = useSetRecoilState(selectedKeywordAtom);
 
   const handleSort = useCallback(
     (type: sortType) => {
+      setSelectedKeyword(null); // 정렬 시 키워드 필터 리셋
       setSortType(type);
     },
-    [setSortType]
+    [setSortType, setSelectedKeyword]
   );
 
   return (

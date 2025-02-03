@@ -7,12 +7,14 @@ import { DetailResultPackageInfo } from '@/types/package';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card } from '@/components/ui/card';
-
+import { useRecoilValue } from 'recoil';
+import { GoogletrendsAtom } from '@/store/atoms';
 interface DetailPackageItemProps {
   result: DetailResultPackageInfo;
 }
 
 export function DetailPackage({ result }: DetailPackageItemProps) {
+  const currentPackage = useRecoilValue(GoogletrendsAtom);
   const { package: pkg, score: score } = result;
   console.log('it works3');
   //   {/*추가 설정 필요한 score 범위 못찾겟음 */}
@@ -75,10 +77,10 @@ export function DetailPackage({ result }: DetailPackageItemProps) {
             <div className="text-white text-xl font-medium">
               {pkg.downloadCount.toLocaleString()}
             </div>
-            <div className="text-white text-xl font-medium">{pkg.googleTrends || '-'}</div>
             <div className="text-white text-xl font-medium">
-              {Math.round((score.final / 1700) * 100)}
+              {currentPackage == null ? '-' : currentPackage}
             </div>
+            <div className="text-white text-xl font-medium">{Math.round(score.final * 100)}</div>
           </div>
         </div>
       </div>

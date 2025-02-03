@@ -1,4 +1,5 @@
 // types/google-trends.ts
+import { SVGProps } from 'react';
 export interface TimelineData {
   time: string;
   formattedTime: string;
@@ -27,5 +28,15 @@ export type CustomTooltipProps = TooltipProps<number, string> & {
     name?: string;
     dataKey?: string;
     payload: TimelineData;
+  }>;
+};
+
+export type CustomTooltipAverageProps = TooltipProps<number, string> & {
+  payload?: Array<{
+    value: number;
+    name?: string;
+    dataKey?: string;
+    payload?: TimelineData;
+    average?: number;
   }>;
 };

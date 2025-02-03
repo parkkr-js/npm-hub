@@ -1,6 +1,6 @@
 // components/package-detail/google-trends/index.tsx
 'use client';
-
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState, useMemo } from 'react';
 import {
   LineChart,
@@ -11,55 +11,84 @@ import {
   Label,
   Tooltip,
   ResponsiveContainer,
+  CartesianGrid,
+  Legend,
 } from 'recharts';
+import { CustomTooltip } from './CustomTooltip';
+import { GoogletrendsAtom } from '@/store/atoms';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { GoogleTrendsProps, TrendsData } from '@/types/google-trends';
 import { fetchGoogleTrends } from '@/app/api/google-trends/actions';
 import { GoogleTrendsSkeleton } from '@/components/skeletons/GoogleTrendsSkeleton';
+import { AverageTooltip } from './CustomTooltiprecharts';
 
 export function GoogleTrends({ packageName }: GoogleTrendsProps) {
-  const [trendsData, setTrendsData] = useState<TrendsData | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const loadTrendsData = async () => {
-      try {
-        const data = await fetchGoogleTrends(packageName);
-        setTrendsData(data);
-        console.log(data);
-      } catch (err) {
-        console.error('Error:', err);
-        setError(err instanceof Error ? err.message : 'An error occurred');
-      } finally {
-        setLoading(false);
+  // React Query를 사용한 데이터 fetch
+  const setGoogleTrends = useSetRecoilState(GoogletrendsAtom);
+  const currentValue = useRecoilValue(GoogletrendsAtom);
+  const queryClient = useQueryClient();
+  const {
+    data: trendsData, // API 응답 데이터
+    error, // 에러 객체
+    isLoading, // 초기 로딩 상태
+    refetch,
+  } = useQuery({
+    queryKey: ['googleTrends', packageName], // 캐시 키
+    queryFn: () => fetchGoogleTrends(packageName), // API 호출 함수
+    select: (data) => {
+      // 데이터가 있고 54번째 항목이 있을 때만 실행
+      if (data?.interest?.[53]?.value) {
+        setGoogleTrends(data.interest[53].value[0]);
+      } else {
+        setGoogleTrends(null);
       }
-    };
+      return data;
+    },
+  });
 
-    loadTrendsData();
-  }, [packageName]);
+  console.log('setset', currentValue);
 
+  // Query 상태 로깅
+  const queryState = queryClient.getQueryState(['googleTrends', packageName]);
+  const cacheData = queryClient.getQueryData(['googleTrends', packageName]);
+
+  console.log('trendsData:', trendsData);
+  console.log('Query Info:', {
+    status: queryState?.status,
+    isCached: !!cacheData,
+    lastUpdated: queryState?.dataUpdatedAt,
+  });
+  useEffect(() => {
+    console.log('컴포넌트 마운트trend:', packageName);
+  }, []);
   const calculateAverage = useMemo(() => {
     if (!trendsData?.interest) return 0;
     const sum = trendsData.interest.reduce((acc, curr) => acc + curr.value[0], 0);
     return sum / trendsData.interest.length;
   }, [trendsData]);
 
+  /*
   const maxValue = useMemo(() => {
     if (!trendsData?.interest) return 0;
     return Math.max(...trendsData.interest.map((item) => item.value[0]));
   }, [trendsData]);
-
-  if (loading) {
+*/
+  if (isLoading) {
     return <GoogleTrendsSkeleton />;
   }
 
-  /*
-  if (error || !trendsData || !trendsData.interest) {
-    return <div className="p-4 text-red-500">{error || 'No trend data available'}</div>;
-  }
-*/
-  if (error || !trendsData || !trendsData.interest || trendsData.interest.length === 0) {
-    return <div className="p-4 text-red-500">{error || 'No trend data available'}</div>;
+  if (error || !trendsData?.interest?.length) {
+    return (
+      <div className="p-4 text-red-500">
+        {error instanceof Error ? error.message : '데이터를 찾을 수 없습니다'}
+        <button
+          onClick={() => refetch()}
+          className="ml-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          재시도
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -74,84 +103,64 @@ export function GoogleTrends({ packageName }: GoogleTrendsProps) {
         </p>
       </div>
       {/* 상단 설명 부분은 동일 */}
-      <div className="h-[352px] bg-secondary-90 rounded-[20px] p-5 w-full">
+      <div className="h-auto bg-secondary-90 rounded-[20px] p-5 w-full">
         <p className="text-xl font-semibold mb-2 text-primary-50">Weeckly download graph</p>
         <p className="text-[#F6F6F6] mb-4">
           A calendar module that is based on material design concepts.
         </p>
 
-        <div className="h-[225px] w-[661px] ml-14 mt-3 rounded-[20px] bg-white">
-          <ResponsiveContainer width="100%" height={160}>
+        <div className="h-[352px] w-[661px] ml-14 mt-3 rounded-[20px] bg-white">
+          <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={trendsData.interest}
-              margin={{ top: 20, right: 30, left: 30, bottom: 40 }}
+              margin={{ top: 10, right: 30, left: 10, bottom: 30 }}
             >
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <XAxis
+                dataKey="formattedTime"
+                angle={-45}
+                textAnchor="end"
+                height={70}
+                tick={{ fontSize: 12 }}
+              />
+              <YAxis
+                domain={[0, 100]}
+                tick={{ fontSize: 12 }}
+                label={{
+                  value: 'Search Interest',
+                  angle: -90,
+                  position: 'insideLeft',
+                  style: { textAnchor: 'middle' },
+                }}
+              />
+
+              <Tooltip
+                content={(props) => <CustomTooltip {...props} average={calculateAverage} />}
+              />
+              <Legend />
+
               <ReferenceLine
                 y={calculateAverage}
-                stroke="#48494D"
+                stroke="#000000"
                 strokeDasharray="3 3"
-                label={
-                  <Label
-                    value="Average"
-                    position="insideTopLeft"
-                    fill="white"
-                    fontSize={12}
-                    background={{
-                      fill: 'black',
-                      padding: { top: 4, bottom: 4, left: 8, right: 8 },
-                      radius: 12,
-                    }}
-                  />
-                }
-              />
-              <XAxis
-                axisLine={{ stroke: '#48494D' }}
-                tickLine={false}
-                tick={false} // 기존 틱 레이블 숨기기
-              />
-              <YAxis hide domain={[0, 100]} />
-              <Tooltip
-                content={({ active, payload }) => {
-                  if (active && payload && payload.length) {
-                    return (
-                      <div className="bg-gray-800 p-2 rounded border border-gray-700">
-                        <p className="text-white text-sm">{`Interest: ${payload[0].value}`}</p>
-                        <p className="text-gray-400 text-xs">{payload[0].payload.formattedTime}</p>
-                      </div>
-                    );
-                  }
-                  return null;
+                label={{
+                  value: 'Average',
+                  position: 'left',
+                  fill: '#000000',
+                  fontSize: 12,
+                  cursor: 'pointer',
                 }}
               />
-              <Line
-                dataKey={(d) => d.value[0]}
-                strokeWidth={0}
-                dot={(props) => {
-                  if (!props || !props.cy || !props.cx) return null;
-                  const { cx, cy, payload } = props;
-                  const isMax = payload.value[0] === maxValue;
 
-                  return (
-                    <g>
-                      <line
-                        x1={cx}
-                        y1={80}
-                        x2={cx}
-                        y2={cy}
-                        stroke={isMax ? '#FF4D4F' : '#000'}
-                        strokeWidth={1}
-                      />
-                      <circle
-                        cx={cx}
-                        cy={cy}
-                        r={4}
-                        fill={isMax ? '#FF4D4F' : '#000'}
-                        stroke={isMax ? '#FF4D4F' : '#000'}
-                        strokeWidth={1}
-                      />
-                    </g>
-                  );
-                }}
+              <Line
+                className="pt-2"
+                type="monotone"
+                dataKey={(d) => d.value[0]}
+                name="Interest"
+                stroke="#48494D"
+                strokeWidth={2}
+                dot={false}
+                activeDot={{ r: 8 }}
               />
             </LineChart>
           </ResponsiveContainer>

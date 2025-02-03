@@ -18,7 +18,7 @@ export default function ClientHeader({ config }: ClientHeaderProps) {
     <header className={`container mx-auto py-4 ${config.headerLayout}`}>
       <Link href="/">
         <h1
-          className={`font-bold text-primary-60 cursor-pointer ${config.logoFont} ${config.logoSize}`}
+          className={`font-bold text-primary-50 cursor-pointer ${config.logoFont} ${config.logoSize}`}
         >
           npm.hub
         </h1>

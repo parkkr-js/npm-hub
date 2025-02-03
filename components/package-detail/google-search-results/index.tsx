@@ -1,5 +1,6 @@
 'use client';
 
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState, useRef } from 'react';
 import { Card } from '@/components/ui/card';
 import { SearchResult, SearchResultsProps } from '@/types/google-search';
@@ -11,14 +12,34 @@ import {
   CarouselItem,
   type CarouselApi,
 } from '@/components/ui/carousel';
+import { fetchGoogleSearch } from '@/app/api/google-search/action';
 
 export function GoogleSearchResults({ packageName }: SearchResultsProps) {
-  const [results, setResults] = useState<SearchResult[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // React Query를 사용한 데이터 fetch
+  const queryClient = useQueryClient();
+  const {
+    data: results = [], // API 응답 데이터
+    error, // 에러 객체
+    isLoading, // 초기 로딩 상태
+  } = useQuery({
+    queryKey: ['googleSearch', packageName], // 캐시 키
+    queryFn: () => fetchGoogleSearch(packageName), // API 호출 함수
+  });
 
+  // Query 상태 로깅
+  const queryState = queryClient.getQueryState(['googleSearch', packageName]);
+  const cacheData = queryClient.getQueryData(['googleSearch', packageName]);
+  console.log('Query Info222:', {
+    status: queryState?.status,
+    isCached: !!cacheData,
+    lastUpdated: queryState?.dataUpdatedAt,
+  });
+  console.log('results:', results);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    console.log('컴포넌트 마운트search:', packageName);
+  }, []);
   const handleNext = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({
@@ -28,31 +49,7 @@ export function GoogleSearchResults({ packageName }: SearchResultsProps) {
     }
   };
 
-  useEffect(() => {
-    const fetchSearchResults = async () => {
-      try {
-        const response = await fetch(
-          `/api/google-search?q=${encodeURIComponent(`npm ${packageName}`)}`
-        );
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch search results');
-        }
-
-        const data = await response.json();
-        setResults(data.items || []);
-        console.log('it works2');
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load results');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSearchResults();
-  }, [packageName]);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="space-y-4">
         {[...Array(3)].map((_, i) => (
@@ -71,7 +68,7 @@ export function GoogleSearchResults({ packageName }: SearchResultsProps) {
   }
 
   if (error) {
-    return <Card className="p-4 text-red-500">{error}</Card>;
+    return <Card className="p-4 text-red-500">{error.message}</Card>;
   }
 
   return (

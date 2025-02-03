@@ -38,7 +38,7 @@ export interface SearchResult {
     src: string;
     width: number;
     height: number;
-  };
+  } | null;
   datePublished?: string | null;
 }
 
