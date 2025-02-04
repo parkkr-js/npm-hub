@@ -1,9 +1,9 @@
 'use client';
 
-// components/search-results/KeywordBox.tsx
 import { memo } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { memoizedTopKeywordsSelector } from '@/store/selectors';
+import { selectedKeywordAtom } from '@/store/atoms'; // 새로 추가
 
 export const KeywordBox = memo(function KeywordBox() {
   const topKeywords = useRecoilValue(memoizedTopKeywordsSelector);
@@ -21,7 +21,18 @@ export const KeywordBox = memo(function KeywordBox() {
 });
 
 const Keyword = memo(function Keyword({ keyword }: { keyword: string }) {
+  const setSelectedKeyword = useSetRecoilState(selectedKeywordAtom);
+
+  const handleClick = () => {
+    setSelectedKeyword((prev) => (prev === keyword ? null : keyword));
+  };
+
   return (
-    <div className="px-3 py-2 bg-secondary-80 rounded text-surface-white text-sm">{keyword}</div>
+    <div
+      className="px-3 py-2 bg-secondary-80 rounded text-surface-white text-sm cursor-pointer hover:bg-secondary-70"
+      onClick={handleClick}
+    >
+      {keyword}
+    </div>
   );
 });

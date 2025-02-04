@@ -1,7 +1,13 @@
 // store/selectors.ts
 
 import { selector } from 'recoil';
-import { suggestionsAtom, searchQueryAtom, searchResultsAtom, sortTypeAtom } from '@/store/atoms';
+import {
+  suggestionsAtom,
+  searchQueryAtom,
+  searchResultsAtom,
+  sortTypeAtom,
+  selectedKeywordAtom,
+} from '@/store/atoms';
 import { calculateBadges } from '@/lib/utils';
 
 export const filteredSuggestionsSelector = selector({
@@ -43,6 +49,18 @@ export const sortedAndBadgedResultsSelector = selector({
     });
 
     return calculateBadges(sortedResults, originalOrder);
+  },
+});
+
+export const keywordFilteredResultsSelector = selector({
+  key: 'keywordFilteredResultsSelector',
+  get: ({ get }) => {
+    const results = get(sortedAndBadgedResultsSelector);
+    const selectedKeyword = get(selectedKeywordAtom);
+
+    if (!selectedKeyword) return results;
+
+    return results.filter((item) => item.package.keywords?.includes(selectedKeyword));
   },
 });
 

@@ -9,9 +9,9 @@ export async function fetchGoogleTrends(packageName: string): Promise<TrendsData
   const cachedData = trendsCache.get(cacheKey);
 
   if (cachedData) {
+    console.log('Using cached trends data');
     return cachedData;
   }
-
   const response = await fetch(`/api/google-trends?keyword=${encodeURIComponent(packageName)}`);
 
   if (!response.ok) {

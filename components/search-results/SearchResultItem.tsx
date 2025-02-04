@@ -13,13 +13,17 @@ interface SearchResultItemProps {
 
 export function SearchResultItem({ result }: SearchResultItemProps) {
   const { package: pkg, badges } = result;
+  console.log(result);
 
   return (
     <div className="p-4 border-b border-secondary-80 animate-fadeIn">
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <Link href={`/detail/${pkg.name}`} className="hover:opacity-80 transition-opacity">
+            <Link
+              href={`/detail/${encodeURIComponent(pkg.name)}`}
+              className="hover:opacity-80 transition-opacity"
+            >
               <h2 className="text-xl font-medium text-primary-50">{pkg.name}</h2>
             </Link>
             <span className="text-sm text-surface-medium">v{pkg.version}</span>

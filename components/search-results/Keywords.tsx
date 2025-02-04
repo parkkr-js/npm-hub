@@ -17,7 +17,7 @@ export function Keywords({ keywords, limit = 5 }: KeywordsProps) {
       {displayedKeywords.map((keyword) => (
         <span
           key={keyword}
-          className="px-2 py-1 text-xs rounded-full bg-secondary-80 text-surface-white"
+          className="px-2 py-1 text-xs rounded-full bg-secondary-100 text-secondary-60"
         >
           {keyword}
         </span>
@@ -25,7 +25,7 @@ export function Keywords({ keywords, limit = 5 }: KeywordsProps) {
       {!showAll && remaining > 0 && (
         <button
           onClick={() => setShowAll(true)}
-          className="px-2 py-1 text-xs rounded-full bg-secondary-70 text-surface-white hover:bg-secondary-60"
+          className="px-2 py-1 text-xs rounded-full bg-secondary-100 text-secondary-60 hover:bg-secondary-60"
         >
           +{remaining}
         </button>

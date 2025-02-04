@@ -3,6 +3,7 @@ import type {
   PackageInfo,
   SuggestionPackageInfo,
   SearchResultPackageInfo,
+  DetailResultPackageInfo,
 } from '@/types/package';
 
 import { CacheManager } from '@/lib/cache';
@@ -20,6 +21,11 @@ const suggestionsCache = new CacheManager<Promise<SuggestionPackageInfo[]>>({
 });
 
 const searchResultsCache = new CacheManager<Promise<SearchResultPackageInfo[]>>({
+  maxSize: 100,
+  expiryTime: 1000 * 60 * 5,
+});
+
+const detailPackgeCache = new CacheManager<Promise<DetailResultPackageInfo[]>>({
   maxSize: 100,
   expiryTime: 1000 * 60 * 5,
 });
@@ -193,20 +199,74 @@ export async function getSearchResultPackages(query: string): Promise<SearchResu
   return fetchPromise;
 }
 
-export async function getPackageDetail(packageName: string): Promise<PackageInfo | null> {
-  try {
-    const response = await axios.get<PackageInfo>(`${NPM_BASE_URL}/${packageName}/latest`);
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error('NPM API Error:', {
-        message: error.message,
-        status: error.response?.status,
-        data: error.response?.data,
-      });
-    } else {
-      console.error('Unexpected error:', error);
-    }
-    return null;
+export async function getPackageDetail(query: string): Promise<DetailResultPackageInfo[]> {
+  const cachedData = detailPackgeCache.get(query);
+  if (cachedData) {
+    console.log('Using cached package data');
+    return cachedData;
   }
+
+  const fetchPromise = (async () => {
+    try {
+      const response = await axios.get(
+        `${NPM_BASE_URL}${NPM_SEARCH_ENDPOINT}${query}&size=1&from=0`
+      );
+
+      const mapPackageData = (item: PackageInfo, downloads: number = 0) => ({
+        package: {
+          name: item.package?.name || 'Unknown Package',
+          version: item.package?.version || 'Unknown Version',
+          description: item.package?.description || 'No description available',
+          keywords: item.package?.keywords || [],
+          date: item.package?.date || 'Unknown Date',
+          author: {
+            name: item.package?.author?.name || 'Unknown',
+            email: item.package?.author?.email || '',
+          },
+          publisher: {
+            username: item.package?.publisher?.username || 'Unknown',
+            email: item.package?.publisher?.email || '',
+          },
+          downloadCount: downloads,
+          //  googletrends: number,
+        },
+        score: {
+          final: item.score.final || 0,
+          detail: {
+            popularity: item.score.detail.popularity || 0,
+          },
+        },
+      });
+
+      const packageDownload = await Promise.all(
+        response.data.objects.map(async (item: PackageInfo) => {
+          try {
+            const downloadsResponse = await axios.get<{ downloads: number }>(
+              `${NPM_API_URL}${NPM_DOWNLOADS_ENDPOINT}${encodeURIComponent(item.package.name)}`
+            );
+            return mapPackageData(item, downloadsResponse.data?.downloads || 0);
+          } catch (downloadError) {
+            console.warn(`Failed to fetch download count for ${item.package.name}:`, downloadError);
+            return mapPackageData(item);
+          }
+        })
+      );
+
+      return packageDownload;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('NPM API Error:', {
+          message: error.message,
+          status: error.response?.status,
+          data: error.response?.data,
+        });
+      } else {
+        console.error('Unexpected error:', error);
+      }
+      return [];
+    }
+  })();
+
+  detailPackgeCache.set(query, fetchPromise);
+  return fetchPromise;
 }
