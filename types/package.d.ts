@@ -132,8 +132,5 @@ export interface DetailResultPackageInfo {
   };
   score: {
     final: number;
-    detail: {
-      popularity: number;
-    };
   };
 }

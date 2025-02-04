@@ -6,7 +6,8 @@ import { TrendsAPIResponse } from '@/types/google-trends';
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const keyword = searchParams.get('keyword');
+    const encodedQuery = searchParams.get('keyword') || '';
+    const keyword = decodeURIComponent(encodedQuery);
 
     if (!keyword) {
       return NextResponse.json({ error: 'Keyword is required' }, { status: 400 });
@@ -19,15 +20,22 @@ export async function GET(request: Request) {
     };
 
     const interestData = await googleTrends.interestOverTime(options);
+
     const parsedInterest = JSON.parse(interestData) as TrendsAPIResponse;
 
     return NextResponse.json({
       interest: parsedInterest.default.timelineData,
     });
   } catch (error) {
-    if (error instanceof Error) {
-      console.error('Google Trends API Error:', error.message);
-    }
-    return NextResponse.json({ error: 'Failed to fetch trends data' }, { status: 500 });
+    // 더 자세한 에러 로깅
+    console.error('Detailed error:', error);
+
+    return NextResponse.json(
+      {
+        error: 'Failed to fetch trends data',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
+      { status: 500 }
+    );
   }
 }

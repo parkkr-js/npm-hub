@@ -67,7 +67,7 @@ export default function SearchBox() {
         placeholder="Search packages..."
         value={inputValue}
         onChange={handleInputChange}
-        className="h-[55px] w-full rounded-[27.5px] border-2 border-secondary-80 bg-secondary-90 pl-10 pr-16 py-4 text-surface-white placeholder:text-surface-medium focus:border-primary-60 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+        className="w-full h-[51.06px] rounded-[27.5px] border-2 border-secondary-80 bg-secondary-90 pl-10 pr-16 py-4 text-surface-white placeholder:text-surface-medium focus:border-primary-60 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
       />
       <button
         type="submit"
