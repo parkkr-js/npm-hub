@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card';
 
 export function CustomTooltip({ active, payload, label, average }: CustomTooltipProps) {
   if (active && payload && payload.length && average > 0) {
-    console.log('payload', payload);
+
     return (
       <Card className="bg-white p-3 shadow-lg border">
         <p className="font-medium">{label}</p>

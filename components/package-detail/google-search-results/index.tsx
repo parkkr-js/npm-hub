@@ -1,6 +1,5 @@
 'use client';
 
-import { useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState, useRef } from 'react';
 import { Card } from '@/components/ui/card';
 import { SearchResult, SearchResultsProps } from '@/types/google-search';
@@ -9,31 +8,28 @@ import Image from 'next/image';
 import { fetchGoogleSearch } from '@/app/api/google-search/action';
 
 export function GoogleSearchResults({ packageName }: SearchResultsProps) {
-  // React Query를 사용한 데이터 fetch
-  const queryClient = useQueryClient();
-  const {
-    data: results = [], // API 응답 데이터
-    error, // 에러 객체
-    isLoading, // 초기 로딩 상태
-  } = useQuery({
-    queryKey: ['googleSearch', packageName], // 캐시 키
-    queryFn: () => fetchGoogleSearch(packageName), // API 호출 함수
-  });
-
-  // Query 상태 로깅
-  const queryState = queryClient.getQueryState(['googleSearch', packageName]);
-  const cacheData = queryClient.getQueryData(['googleSearch', packageName]);
-  console.log('Query Info222:', {
-    status: queryState?.status,
-    isCached: !!cacheData,
-    lastUpdated: queryState?.dataUpdatedAt,
-  });
-  console.log('results:', results);
+  const [results, setResults] = useState<SearchResult[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    console.log('컴포넌트 마운트search:', packageName);
-  }, []);
+    const loadSearchResults = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const data = await fetchGoogleSearch(packageName);
+        setResults(data);
+      } catch (err) {
+        setError(err instanceof Error ? err : new Error('Failed to fetch search results'));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadSearchResults();
+  }, [packageName]);
+
   const handleNext = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({

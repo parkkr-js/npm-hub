@@ -2,12 +2,16 @@
 import { NextResponse } from 'next/server';
 import googleTrends from 'google-trends-api';
 import { TrendsAPIResponse } from '@/types/google-trends';
+import { removeSpecialChars } from '@/lib/utils';
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const encodedQuery = searchParams.get('keyword') || '';
-    const keyword = decodeURIComponent(encodedQuery);
+
+
+    const keyword = searchParams.get('keyword') || '';
+
+    console.log('키워드:', keyword);
 
     if (!keyword) {
       return NextResponse.json({ error: 'Keyword is required' }, { status: 400 });

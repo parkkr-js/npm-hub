@@ -18,7 +18,8 @@ export const searchQueryAtom = atom<string>({
   key: 'searchQueryAtom',
   default: '',
 });
-export const GoogletrendsAtom = atom<number>({
+
+export const GoogletrendsAtom = atom<number | null>({
   key: 'GoogletrendsnumberAtom',
   default: 0,
 });
@@ -27,6 +28,7 @@ export const selectedKeywordAtom = atom<string | null>({
   key: 'selectedKeywordAtom',
   default: '',
 });
+
 export const suggestionsAtom = atom<SuggestionPackageInfo[]>({
   key: 'suggestionsAtom',
   default: [],

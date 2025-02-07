@@ -95,3 +95,12 @@ export function getTimeAgo(date: string) {
 export function slashEncoding(name: string) {
   return name.replace(/\//g, '%2F');
 }
+
+export function removeSpecialChars(str: string): string {
+  // 1. 모든 특수문자를 공백으로 치환
+  // 2. 연속된 공백을 하나의 공백으로 변경
+  // 3. 앞뒤 공백 제거
+  return str.replace(/[^a-zA-Z0-9가-힣]/g, ' ')
+           .replace(/\s+/g, ' ')
+           .trim();
+}
