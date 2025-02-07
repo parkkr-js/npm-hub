@@ -6,12 +6,6 @@ import { Card } from '@/components/ui/card';
 import { SearchResult, SearchResultsProps } from '@/types/google-search';
 import { ExternalLink, Image as ImageIcon } from 'lucide-react';
 import Image from 'next/image';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  type CarouselApi,
-} from '@/components/ui/carousel';
 import { fetchGoogleSearch } from '@/app/api/google-search/action';
 
 export function GoogleSearchResults({ packageName }: SearchResultsProps) {
@@ -68,11 +62,15 @@ export function GoogleSearchResults({ packageName }: SearchResultsProps) {
   }
 
   if (error) {
-    return <Card className="p-4 text-red-500">{error.message}</Card>;
+    return (
+      <Card className="bg-secondary-90 w-80 h-[560px] flex flex-col rounded-[20px]">
+        {error.message}
+      </Card>
+    );
   }
 
   return (
-    <div className="bg-secondary-90 w-80 h-[560px] flex flex-col rounded-[20px]">
+    <div className="bg-secondary-90 w-80 max-h-[560px] flex flex-col rounded-[20px]">
       <div>
         <p className="ml-8 mt-6 text-xl font-semibold text-[#F5F6F8]">Related search</p>
         <p className="ml-8 text-xs font-normal text-secondary-40">
@@ -80,7 +78,10 @@ export function GoogleSearchResults({ packageName }: SearchResultsProps) {
         </p>
       </div>
 
-      <div ref={scrollContainerRef} className="flex flex-col overflow-y-auto px-6 py-3 space-y-3">
+      <div
+        ref={scrollContainerRef}
+        className="flex flex-col overflow-y-auto px-6 py-3 space-y-3 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+      >
         {results.map((result, index) => (
           <div
             key={index}

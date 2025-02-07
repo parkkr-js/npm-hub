@@ -20,7 +20,6 @@ import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { GoogleTrendsProps, TrendsData } from '@/types/google-trends';
 import { fetchGoogleTrends } from '@/app/api/google-trends/actions';
 import { GoogleTrendsSkeleton } from '@/components/skeletons/GoogleTrendsSkeleton';
-import { AverageTooltip } from './CustomTooltiprecharts';
 
 export function GoogleTrends({ packageName }: GoogleTrendsProps) {
   // React Query를 사용한 데이터 fetch

@@ -1,11 +1,12 @@
 'use client';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import { getPublisherAvatarUrl } from '@/lib/utils';
+import { getPublisherAvatarUrl, slashEncoding } from '@/lib/utils';
 import { PopularPackageInfo } from '@/types/package';
 import Image from 'next/image';
 import Link from 'next/link';
-
+import { useResetRecoilState } from 'recoil';
+import { searchQueryAtom } from '@/store/atoms';
 export default function PopularPackageCarousel({ packages }: { packages: PopularPackageInfo[] }) {
   if (!packages || packages.length === 0) {
     return <div className="w-full p-4 text-center text-surface-medium">패키지 없음</div>;
@@ -20,6 +21,7 @@ export default function PopularPackageCarousel({ packages }: { packages: Popular
       window.open(getNpmProfileUrl(username), '_blank');
     }
   };
+  const resetSearchQuery = useResetRecoilState(searchQueryAtom);
 
   return (
     <ScrollArea className="w-full whitespace-nowrap">
@@ -31,8 +33,9 @@ export default function PopularPackageCarousel({ packages }: { packages: Popular
           >
             <CardHeader>
               <Link
-                href={`/detail/${encodeURIComponent(pkg.name)}`}
+                href={`/detail/${slashEncoding(pkg.name)}`}
                 className="text-lg font-semibold text-primary-40"
+                onClick={resetSearchQuery}
               >
                 {pkg.name || 'Unknown Package'}
               </Link>

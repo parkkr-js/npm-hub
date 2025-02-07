@@ -19,69 +19,91 @@ export function DetailPackage({ result }: DetailPackageItemProps) {
   console.log('it works3');
   //   {/*추가 설정 필요한 score 범위 못찾겟음 */}
   console.log(score);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(`npm i ${pkg.name}`);
+  };
+  const stats = [
+    { label: 'Version', value: pkg.version },
+    { label: 'Download/week', value: pkg.downloadCount.toLocaleString() },
+    { label: 'Google trend', value: currentPackage ?? '-' },
+    { label: 'Score', value: Math.round(score.final * 100) },
+  ];
   return (
     <div>
-      <div className="bg-secondary-90 w-[785px] h-56 rounded-[20px]">
-        <div className="ml-6 flex flex-col">
-          <div className="mt-4 flex items-center gap-4 text-sm text-surface-medium">
+      <div className="flex flex-col bg-secondary-90 w-[785px] px-6 min-h-56 rounded-[20px]">
+        <div className="mt-4 flex items-center gap-4 text-sm text-surface-medium">
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-surface-medium">{pkg.version}</span>
+            <span>•</span>
+            <span>{getTimeAgo(pkg.date)}</span>
+            <span>•</span>
+            <Image
+              src={getPublisherAvatarUrl(pkg.publisher.username)}
+              alt={pkg.publisher.username}
+              width={24}
+              height={24}
+              className="rounded-full"
+            />
+            <span>{pkg.publisher.username}</span>
+          </div>
+        </div>
+        <div className="flex">
+          <div className=" w-[500px] flex flex-col bg-slate-500">
             <div className="flex items-center gap-2">
-              <span className="text-sm text-surface-medium">{pkg.version}</span>
-              <span>•</span>
-              <span>{getTimeAgo(pkg.date)}</span>
-              <span>•</span>
-              <Image
-                src={getPublisherAvatarUrl(pkg.publisher.username)}
-                alt={pkg.publisher.username}
-                width={24}
-                height={24}
-                className="rounded-full"
-              />
-              <span>{pkg.publisher.username}</span>
+              <p className="text-4xl font-semibold text-primary-50">{pkg.name}</p>
+            </div>
+
+            <div className="flex">
+              <p className="w-[450px] bg-slate-950 mt-9  text-surface-white">{pkg.description}</p>
+            </div>
+            <div className="mt-4 flex">
+              <Keywords keywords={pkg.keywords} />
             </div>
           </div>
-
-          <div className="flex items-center gap-2">
-            <p className="text-4xl font-semibold text-primary-50">{pkg.name}</p>
-          </div>
-
-          <p className="mt-9 mt-2 text-surface-white">{pkg.description}</p>
-
-          <div className="mt-4">
-            <Keywords keywords={pkg.keywords} />
+          <div className="flex-col ml-[12%] w-[110px] bg-slate-400">
+            <p className="text-secondary-30 font-semibold text-base mr-4">Command</p>
+            <div className="flex w-full bg-gray-200 h-10 p-2 rounded-lg bg-secondary-70 ">
+              {/*<p className=" whitespace-nowrap  text-[#FFF] ">{`npm i ${pkg.name}`}</p>*/}
+              <p className=" overflow-x-auto whitespace-nowrap  [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-[#FFF] ">{`npm i ${pkg.name}`}</p>
+              <img
+                onClick={handleCopy}
+                src="/images/copyvector.svg"
+                alt="copy"
+                className="cursor-pointer w-4 h-5 mt-1 ml-1"
+              />
+            </div>
           </div>
         </div>
       </div>
       <div className="bg-secondary-90 w-[785px] rounded-[20px] mt-4">
-        <div className="h-10 pt-1 w-full">
-          <div className="flex justify-around">
-            <p className="text-secondary-40 text-base">Version</p>
-            <p className="text-secondary-40 text-base">Download/week</p>
-            <p className="text-secondary-40 text-base">Google trend</p>
-            <p className="text-secondary-40 text-base">Score</p>
-          </div>
+        <div className="grid grid-cols-4 h-10 pt-1">
+          {stats.map(({ label }) => (
+            <p key={label} className="text-secondary-40 text-base text-center">
+              {label}
+            </p>
+          ))}
         </div>
 
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="785"
+          width="100%"
           height="2"
-          viewBox="0 0 785 2"
-          fill="none"
+          preserveAspectRatio="none"
+          viewBox="0 0 100 2"
         >
-          <path d="M0 1L785 1.00007" stroke="#151617" strokeWidth="2" />
+          <path d="M0 1L100 1" stroke="#151617" strokeWidth="2" />
         </svg>
 
-        <div className="h-16 pb-4 px-8">
-          <div className="flex justify-between mt-4">
-            <div className="text-white text-xl font-medium">{pkg.version}</div>
-            <div className="text-white text-xl font-medium">
-              {pkg.downloadCount.toLocaleString()}
+        <div className="grid grid-cols-4 h-16 pb-4 px-0">
+          {stats.map(({ label, value }) => (
+            <div
+              key={label}
+              className="text-white text-xl overflow-hidden text-ellipsis font-medium text-center mt-4"
+            >
+              {value}
             </div>
-            <div className="text-white text-xl font-medium">
-              {currentPackage == null ? '-' : currentPackage}
-            </div>
-            <div className="text-white text-xl font-medium">{Math.round(score.final * 100)}</div>
-          </div>
+          ))}
         </div>
       </div>
     </div>
