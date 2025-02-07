@@ -91,3 +91,7 @@ export function getTimeAgo(date: string) {
   if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
   return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
 }
+
+export function slashEncoding(name: string) {
+  return name.replace(/\//g, '%2F');
+}

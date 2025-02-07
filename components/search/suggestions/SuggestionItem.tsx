@@ -4,20 +4,24 @@
 import { Badge } from '@/components/ui/Badge';
 import Link from 'next/link';
 import type { SuggestionPackageInfo } from '@/types/package';
-
+import { useResetRecoilState } from 'recoil';
+import { searchQueryAtom } from '@/store/atoms';
+import { slashEncoding } from '@/lib/utils';
 interface SuggestionItemProps {
   suggestion: SuggestionPackageInfo;
 }
 
 export default function SuggestionItem({ suggestion }: SuggestionItemProps) {
+  const resetSearchQuery = useResetRecoilState(searchQueryAtom);
   return (
     <div className="p-4  border-b border-surface-medium last:border-0">
       <div className="flex items-center justify-between">
         <div className="flex-1">
           <div className="flex items-center gap-2 ">
             <Link
-              href={`/search/${encodeURIComponent(suggestion.package.name)}`}
+              href={`/detail/${slashEncoding(suggestion.package.name)}`}
               className="hover:bg-surface-hover cursor-pointer text-primary-50 text-lg font-medium"
+              onClick={resetSearchQuery}
             >
               {suggestion.package.name}
             </Link>

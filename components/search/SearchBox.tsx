@@ -1,21 +1,28 @@
 'use client';
-import { useTransition, useState, useCallback } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useTransition, useState, useCallback, useEffect } from 'react';
+import { useResetRecoilState, useSetRecoilState } from 'recoil';
 import { useDebouncedCallback } from 'use-debounce';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
 import { searchQueryAtom, suggestionsAtom } from '@/store/atoms';
 import { getSuggestionPackages } from '@/app/api/npm';
-import { useRouter } from 'next/navigation';
-
+import { usePathname, useRouter } from 'next/navigation';
+import { slashEncoding } from '@/lib/utils';
 export default function SearchBox() {
   const [isPending, startTransition] = useTransition();
   const [inputValue, setInputValue] = useState('');
   const router = useRouter();
-
+  const resetAtom = useResetRecoilState(searchQueryAtom);
+  const pathname = usePathname();
   const setSearchQuery = useSetRecoilState(searchQueryAtom);
   const setSuggestions = useSetRecoilState(suggestionsAtom);
 
+  useEffect(() => {
+    if (!pathname.startsWith('/search')) {
+      setInputValue('');
+      resetAtom();
+    }
+  }, [pathname]);
   const handleSearch = useDebouncedCallback(
     (value: string) => {
       if (!value.trim()) {
@@ -54,7 +61,9 @@ export default function SearchBox() {
       e.preventDefault();
       const trimmedValue = inputValue.trim();
       if (trimmedValue) {
-        router.push(`/search/${encodeURIComponent(trimmedValue)}`);
+        router.push(`/search/${slashEncoding(trimmedValue)}`);
+
+        resetAtom();
       }
     },
     [inputValue, router]

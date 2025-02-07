@@ -10,7 +10,8 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: 5 * 60 * 1000, // 데이터 신선도 유지
       gcTime: 5 * 60 * 1000, // 캐시 유지 시간
-      retry: false,
+      retry: 2,
+      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
       refetchOnWindowFocus: false,
     },
   },

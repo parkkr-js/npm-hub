@@ -13,7 +13,7 @@ export function Keywords({ keywords, limit = 5 }: KeywordsProps) {
   const remaining = keywords.length - limit;
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="w-96 flex flex-wrap gap-2">
       {displayedKeywords.map((keyword) => (
         <span
           key={keyword}
