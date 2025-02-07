@@ -1,5 +1,5 @@
 // compoenents/search-results/SearchResultItem.tsx
-import { getTimeAgo } from '@/lib/utils';
+import { getTimeAgo, slashEncoding } from '@/lib/utils';
 import { getPublisherAvatarUrl } from '@/lib/utils';
 import { Keywords } from '@/components/search-results/Keywords';
 import { Badge } from '@/components/ui/Badge';
@@ -21,7 +21,7 @@ export function SearchResultItem({ result }: SearchResultItemProps) {
         <div className="flex-1">
           <div className="flex items-center gap-2">
             <Link
-              href={`/detail/${encodeURIComponent(pkg.name)}`}
+              href={`/detail/${slashEncoding(pkg.name)}`}
               className="hover:opacity-80 transition-opacity"
             >
               <h2 className="text-xl font-medium text-primary-50">{pkg.name}</h2>
