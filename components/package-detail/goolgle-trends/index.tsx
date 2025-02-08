@@ -13,6 +13,7 @@ import {
   CartesianGrid,
   Legend,
 } from 'recharts';
+
 import { CustomTooltip } from './CustomTooltip';
 import { GoogletrendsAtom } from '@/store/atoms';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
@@ -26,7 +27,6 @@ export function GoogleTrends({ packageName }: GoogleTrendsProps) {
   const [error, setError] = useState<Error | null>(null);
 
   const setGoogleTrends = useSetRecoilState(GoogletrendsAtom);
-  const currentValue = useRecoilValue(GoogletrendsAtom);
 
   useEffect(() => {
     const loadData = async () => {
@@ -36,8 +36,8 @@ export function GoogleTrends({ packageName }: GoogleTrendsProps) {
         const data = await fetchGoogleTrends(packageName);
         setTrendsData(data);
 
-        if (data?.interest?.[53]?.value) {
-          setGoogleTrends(data.interest[53].value[0]);
+        if (data?.interest?.[52]?.value) {
+          setGoogleTrends(data.interest[52].value[0]);
         } else {
           setGoogleTrends(null);
         }
@@ -57,34 +57,45 @@ export function GoogleTrends({ packageName }: GoogleTrendsProps) {
     return sum / trendsData.interest.length;
   }, [trendsData]);
 
+  const calculateMax = useMemo(() => {
+    if (!trendsData?.interest) return 0;
+    const max = trendsData.interest.reduce((acc, curr) => Math.max(acc, curr.value[0]), 0);
+    return max;
+  }, [trendsData]);
+
   if (isLoading) {
     return <GoogleTrendsSkeleton />;
   }
 
+  // if (error) {
+  //   return (
+  //     <div className="p-4 text-red-500">
+  //       {error?.message}
+  //       <button
+  //         onClick={() => {
+  //           setIsLoading(true);
+  //           setError(null);
+  //           fetchGoogleTrends(packageName)
+  //             .then((data) => {
+  //               setTrendsData(data);
+  //               if (data?.interest?.[53]?.value) {
+  //                 setGoogleTrends(data.interest[53].value[0]);
+  //               }
+  //             })
+  //             .catch((err) => setError(err instanceof Error ? err : new Error('재시도 실패')))
+  //             .finally(() => setIsLoading(false));
+  //         }}
+  //         className="ml-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+  //       >
+  //         재시도
+  //       </button>
+  //     </div>
+  //   );
+  // }
   if (error) {
-    return (
-      <div className="p-4 text-red-500">
-        {error?.message}
-        <button
-          onClick={() => {
-            setIsLoading(true);
-            setError(null);
-            fetchGoogleTrends(packageName)
-              .then((data) => {
-                setTrendsData(data);
-                if (data?.interest?.[53]?.value) {
-                  setGoogleTrends(data.interest[53].value[0]);
-                }
-              })
-              .catch((err) => setError(err instanceof Error ? err : new Error('재시도 실패')))
-              .finally(() => setIsLoading(false));
-          }}
-          className="ml-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          재시도
-        </button>
-      </div>
-    );
+    <div className="w-[785px] bg-secondary-90 rounded-[20px] p-6 mb-6">
+      <p className="text-xl font-semibold mb-2 text-[#ff000083]">Soon, It will be back.</p>
+    </div>;
   }
 
   return (
@@ -156,7 +167,25 @@ export function GoogleTrends({ packageName }: GoogleTrendsProps) {
                     name="Interest"
                     stroke="#48494D"
                     strokeWidth={2}
-                    dot={false}
+                    dot={(props) => {
+                      const isMax = props.value === calculateMax;
+                      return isMax ? (
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 14 14"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          x={props.cx - 7}
+                          y={props.cy - 7}
+                        >
+                          <circle cx="7" cy="7" r="6.5" fill="#FF5449" stroke="#FF5449" />
+                          <circle cx="7" cy="7" r="4.5" stroke="#F0F1F7" />
+                        </svg>
+                      ) : (
+                        <circle cx={props.cx} cy={props.cy} r={0} fill="none" stroke="none" />
+                      );
+                    }}
                     activeDot={{ r: 8 }}
                   />
                 </LineChart>

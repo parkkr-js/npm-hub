@@ -208,7 +208,6 @@ export async function getSearchResultPackages(query: string): Promise<SearchResu
 export async function getPackageDetail(query: string): Promise<DetailResultPackageInfo[]> {
   const cachedData = detailPackgeCache.get(query);
   if (cachedData) {
-    console.log('Using cached package data');
     return cachedData;
   } else {
     const fetchPromise = (async () => {
@@ -319,7 +318,7 @@ export async function getPackageDetail(query: string): Promise<DetailResultPacka
     })();
 
     detailPackgeCache.set(query, fetchPromise);
-    console.log('cached package data');
+
     return fetchPromise;
   }
 }
