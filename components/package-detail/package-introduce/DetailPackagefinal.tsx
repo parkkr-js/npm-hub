@@ -58,10 +58,9 @@ export function DetailPackage({ result }: DetailPackageItemProps) {
               <Keywords keywords={pkg.keywords} />
             </div>
           </div>
-          <div className="flex-col ml-[6%] max-w-[170px] bg-slate-400">
+          <div className="flex-col ml-[6%] max-w-[170px] ">
             <p className="text-secondary-30 font-semibold text-base mr-4">Command</p>
             <div className="flex w-full bg-gray-200 h-10 p-2 rounded-lg bg-secondary-70 ">
-              {/*<p className=" whitespace-nowrap  text-[#FFF] ">{`npm i ${pkg.name}`}</p>*/}
               <p className=" overflow-x-auto whitespace-nowrap  [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-[#FFF] ">{`npm i ${pkg.name}`}</p>
               <img
                 onClick={handleCopy}
