@@ -97,10 +97,7 @@ export function slashEncoding(name: string) {
 }
 
 export function removeSpecialChars(str: string): string {
-  // 1. 모든 특수문자를 공백으로 치환
-  // 2. 연속된 공백을 하나의 공백으로 변경
-  // 3. 앞뒤 공백 제거
-  return str.replace(/[^a-zA-Z0-9가-힣]/g, ' ')
-           .replace(/\s+/g, ' ')
-           .trim();
-}
+  return str.replace(/[^a-zA-Z0-9가-힣]/g, ' ')  // 특수문자를 공백으로
+           .trim()  // 앞뒤 공백 제거를 먼저하고
+           .replace(/\s+/g, '-');  // 남은 공백들을 '-'로 변경
+ }

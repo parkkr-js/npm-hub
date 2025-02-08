@@ -16,9 +16,7 @@ interface DetailPackageItemProps {
 export function DetailPackage({ result }: DetailPackageItemProps) {
   const currentPackage = useRecoilValue(GoogletrendsAtom);
   const { package: pkg, score: score } = result;
-  console.log('it works3');
-  //   {/*추가 설정 필요한 score 범위 못찾겟음 */}
-  console.log(score);
+
 
   const handleCopy = () => {
     navigator.clipboard.writeText(`npm i ${pkg.name}`);

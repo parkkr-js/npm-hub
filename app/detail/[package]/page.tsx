@@ -40,9 +40,9 @@ export default async function PackageDetailPage({ params }: PageProps) {
 
       {/* 추가 정보 영역 */}
       <div className="ml-5">
-        {/* <Suspense fallback={<div>Loading search results...</div>}>
+        <Suspense fallback={<div>Loading search results...</div>}>
           <GoogleSearchResults packageName={params.package} />
-        </Suspense> */}
+        </Suspense>
       </div>
     </div>
   );
