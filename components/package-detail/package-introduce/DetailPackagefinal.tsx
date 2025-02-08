@@ -2,16 +2,14 @@
 import { getTimeAgo } from '@/lib/utils';
 import { getPublisherAvatarUrl } from '@/lib/utils';
 import { Keywords } from '@/components/search-results/Keywords';
-import { Badge } from '@/components/ui/Badge';
 import { DetailResultPackageInfo } from '@/types/package';
 import Image from 'next/image';
-import Link from 'next/link';
-import { Card } from '@/components/ui/card';
 import { useRecoilValue } from 'recoil';
 import { GoogletrendsAtom } from '@/store/atoms';
 interface DetailPackageItemProps {
   result: DetailResultPackageInfo;
 }
+import { useState } from 'react';
 
 export function DetailPackage({ result }: DetailPackageItemProps) {
   const currentPackage = useRecoilValue(GoogletrendsAtom);
@@ -20,12 +18,16 @@ export function DetailPackage({ result }: DetailPackageItemProps) {
   const handleCopy = () => {
     navigator.clipboard.writeText(`npm i ${pkg.name}`);
   };
+
   const stats = [
     { label: 'Version', value: pkg.version },
     { label: 'Download/week', value: pkg.downloadCount.toLocaleString() },
     { label: 'Google trend', value: currentPackage ?? '-' },
     { label: 'Score', value: Math.round(score.final * 100) },
   ];
+
+  const [isExpanded, setIsExpanded] = useState(false);
+
   return (
     <div>
       <div className="flex flex-col bg-secondary-90 w-[785px] px-6 min-h-56 rounded-[20px]">
@@ -50,15 +52,25 @@ export function DetailPackage({ result }: DetailPackageItemProps) {
             <div className="flex items-center gap-2">
               <p className="text-4xl font-semibold text-primary-50">{pkg.name}</p>
             </div>
-
-            <div className="flex">
-              <p className="w-[450px] mt-9  text-surface-white">{pkg.description}</p>
+            <div
+              className={`mt-9 relative ${isExpanded ? 'h-auto min-h-[45px]' : 'h-[45px] overflow-hidden line-clamp-2'}`}
+            >
+              <p className="w-[450px] text-surface-white">{pkg.description}</p>
+              {pkg.description.length > 100 && (
+                <button
+                  onClick={() => setIsExpanded(!isExpanded)}
+                  className="absolute bottom-0 right-0  text-secondary-60 transition-colors"
+                >
+                  {isExpanded ? '접기' : '더보기'}
+                </button>
+              )}
             </div>
+
             <div className="mt-4 flex">
               <Keywords keywords={pkg.keywords} />
             </div>
           </div>
-          <div className="flex-col ml-[6%] max-w-[170px] ">
+          <div className="flex-col ml-[6%] mt-[10%] max-w-[170px] ">
             <p className="text-secondary-30 font-semibold text-base mr-4">Command</p>
             <div className="flex w-full bg-gray-200 h-10 p-2 rounded-lg bg-secondary-70 ">
               <p className=" overflow-x-auto whitespace-nowrap  [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-[#FFF] ">{`npm i ${pkg.name}`}</p>
