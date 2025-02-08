@@ -65,6 +65,7 @@ export default function SearchBox() {
 
         resetAtom();
       }
+      console.log('#########', trimmedValue);
     },
     [inputValue, router]
   );

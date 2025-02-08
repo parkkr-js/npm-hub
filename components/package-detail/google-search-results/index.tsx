@@ -59,9 +59,12 @@ export function GoogleSearchResults({ packageName }: SearchResultsProps) {
 
   if (error) {
     return (
-      <Card className="bg-secondary-90 w-80 h-[560px] flex flex-col rounded-[20px]">
-        {error.message}
-      </Card>
+      <div className="w-80 max-h-[560px] bg-secondary-90 rounded-[20px] p-6 mb-6">
+        <p className="text-xl font-semibold mb-2 text-[#ff000083]">
+          We couldn’t find any google-search information on this package. It may not be available
+          yet.
+        </p>
+      </div>
     );
   }
 

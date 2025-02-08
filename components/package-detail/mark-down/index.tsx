@@ -44,16 +44,10 @@ export default function Markdown({ packageName }: MarkDownProps) {
 
   if (error) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="text-red-500">{error}</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="text-red-500">{error}</div>
+      <div className="w-[785px] bg-secondary-90 rounded-[20px] p-6 mb-6">
+        <p className="text-xl font-semibold mb-2 text-[#ff000083]">
+          We couldn’t find any README information on this package. It may not be available yet.
+        </p>
       </div>
     );
   }

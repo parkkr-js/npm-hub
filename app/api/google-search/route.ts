@@ -2,23 +2,14 @@
 import { NextResponse } from 'next/server';
 import { GoogleSearchItem } from '@/types/google-search';
 
-import { removeSpecialChars } from '@/lib/utils';
-
 const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
 const GOOGLE_CX_ID = process.env.GOOGLE_CX_ID;
-
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
 
-    let encodedQuery = searchParams.get('q') || '';
-
-    encodedQuery = decodeURIComponent(encodedQuery);
-
-    const query = removeSpecialChars(encodedQuery);
- 
-    console.log('query:', query); 
+    const query = searchParams.get('q') || '';
 
     if (!query) {
       return NextResponse.json({ error: 'Query parameter is required' }, { status: 400 });
@@ -27,17 +18,17 @@ export async function GET(request: Request) {
     if (!GOOGLE_API_KEY || !GOOGLE_CX_ID) {
       throw new Error('Missing Google API configuration');
     }
-
-  
-
-
+    console.log(query);
     const searchUrl = new URL('https://customsearch.googleapis.com/customsearch/v1');
     const params = {
       key: GOOGLE_API_KEY,
       cx: GOOGLE_CX_ID,
       q: query,
       num: '5',
-      safe: 'active',
+      filter: 0,
+
+      gl: 'kr',
+      hl: 'ko',
     };
 
     Object.entries(params).forEach(([key, value]) => {
@@ -81,7 +72,6 @@ export async function GET(request: Request) {
         : undefined,
       datePublished: item.pagemap?.metatags?.[0]?.['article:published_time'] || null,
     }));
-
 
     return NextResponse.json({
       items: formattedResults,
