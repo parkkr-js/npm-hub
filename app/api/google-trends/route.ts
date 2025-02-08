@@ -1,20 +1,17 @@
 // app/api/google-trends/route.ts
-import { NextResponse } from "next/server";
-import googleTrends from "google-trends-api";
-import { TrendsAPIResponse } from "@/types/google-trends";
-import { removeSpecialChars } from "@/lib/utils";
+import { NextResponse } from 'next/server';
+import googleTrends from 'google-trends-api';
+import { TrendsAPIResponse } from '@/types/google-trends';
+import { removeSpecialChars } from '@/lib/utils';
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
 
-    const keyword = searchParams.get("keyword") || "";
+    const keyword = searchParams.get('keyword') || '';
 
     if (!keyword) {
-      return NextResponse.json(
-        { error: "Keyword is required" },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: 'Keyword is required' }, { status: 400 });
     }
 
     const options = {
@@ -32,14 +29,14 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     // 더 자세한 에러 로깅
-    console.error("Detailed error:", error);
+    //.error("Detailed error:", error);
 
     return NextResponse.json(
       {
-        error: "Failed to fetch trends data",
-        details: error instanceof Error ? error.message : "Unknown error",
+        error: 'Failed to fetch trends data',
+        details: error instanceof Error ? error.message : 'Unknown error',
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

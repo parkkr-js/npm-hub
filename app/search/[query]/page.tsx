@@ -12,9 +12,8 @@ interface SearchPageProps {
 }
 
 export default async function SearchPage({ params }: SearchPageProps) {
-  console.time('SearchPage');
   const initialResults = await getSearchResultPackages(params.query);
-  console.timeEnd('SearchPage');
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="grid grid-cols-12 gap-6">

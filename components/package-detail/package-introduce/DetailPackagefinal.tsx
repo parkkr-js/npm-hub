@@ -17,7 +17,6 @@ export function DetailPackage({ result }: DetailPackageItemProps) {
   const currentPackage = useRecoilValue(GoogletrendsAtom);
   const { package: pkg, score: score } = result;
 
-
   const handleCopy = () => {
     navigator.clipboard.writeText(`npm i ${pkg.name}`);
   };
@@ -47,19 +46,19 @@ export function DetailPackage({ result }: DetailPackageItemProps) {
           </div>
         </div>
         <div className="flex">
-          <div className=" w-[500px] flex flex-col bg-slate-500">
+          <div className=" w-[500px] flex flex-col ">
             <div className="flex items-center gap-2">
               <p className="text-4xl font-semibold text-primary-50">{pkg.name}</p>
             </div>
 
             <div className="flex">
-              <p className="w-[450px] bg-slate-950 mt-9  text-surface-white">{pkg.description}</p>
+              <p className="w-[450px] mt-9  text-surface-white">{pkg.description}</p>
             </div>
             <div className="mt-4 flex">
               <Keywords keywords={pkg.keywords} />
             </div>
           </div>
-          <div className="flex-col ml-[12%] w-[110px] bg-slate-400">
+          <div className="flex-col ml-[6%] max-w-[170px] bg-slate-400">
             <p className="text-secondary-30 font-semibold text-base mr-4">Command</p>
             <div className="flex w-full bg-gray-200 h-10 p-2 rounded-lg bg-secondary-70 ">
               {/*<p className=" whitespace-nowrap  text-[#FFF] ">{`npm i ${pkg.name}`}</p>*/}

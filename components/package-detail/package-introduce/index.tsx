@@ -4,7 +4,7 @@ import { useEffect, useMemo } from 'react';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { detailPackageAtom } from '@/store/atoms';
 import { DetailResultPackageInfo } from '@/types/package';
-import { DetailPackagemid } from './DetailPackagemid';
+
 import { DetailPackage } from './DetailPackagefinal';
 
 interface DetailPackageWrapperProps {
