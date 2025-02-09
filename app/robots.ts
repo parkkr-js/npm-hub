@@ -11,7 +11,7 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: 'Googlebot',
         allow: [
           '/',              // 메인 페이지
-          '/search',        // 검색 페이지
+          '/search/*',        // 검색 페이지
           '/detail/*',      // 패키지 상세 페이지 (경로 수정)
         ],
         disallow: [
@@ -25,7 +25,7 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: '*',
         allow: [
           '/',
-          '/search',
+          '/search/*',
           '/detail/*',      // 패키지 상세 페이지 (경로 수정)
         ],
         disallow: [
