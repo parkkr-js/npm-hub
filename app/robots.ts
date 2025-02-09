@@ -10,9 +10,9 @@ export default function robots(): MetadataRoute.Robots {
         // 구글 크롤러에 대한 특별 규칙
         userAgent: 'Googlebot',
         allow: [
-          '/',              // 메인 페이지
-          '/search/*',        // 검색 페이지
-          '/detail/*',      // 패키지 상세 페이지 (경로 수정)
+          '/',             
+          '/search/*',        
+          '/detail/*',      
         ],
         disallow: [
           '/api/*',         // API 엔드포인트 제외
@@ -26,7 +26,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: [
           '/',
           '/search/*',
-          '/detail/*',      // 패키지 상세 페이지 (경로 수정)
+          '/detail/*',     
         ],
         disallow: [
           '/api/*',
