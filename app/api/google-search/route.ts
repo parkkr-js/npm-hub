@@ -18,7 +18,7 @@ export async function GET(request: Request) {
     if (!GOOGLE_API_KEY || !GOOGLE_CX_ID) {
       throw new Error('Missing Google API configuration');
     }
-    console.log(query);
+
     const searchUrl = new URL('https://customsearch.googleapis.com/customsearch/v1');
     const params = {
       key: GOOGLE_API_KEY,

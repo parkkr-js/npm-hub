@@ -27,37 +27,37 @@ export default function PopularPackageCarousel({ packages }: { packages: Popular
     <ScrollArea className="w-full whitespace-nowrap">
       <div className="flex space-x-4 pb-4">
         {packages.map((pkg) => (
-          <Card
+          <div
             key={pkg.name}
-            className="w-[300px] flex-none bg-secondary-90/50 border-surface-medium"
+            className="flex flex-col w-[300px] h-[205px] py-[23px] rounded-[23.03px] px-[20.9px] flex-none bg-secondary-90/50 border-surface-medium"
           >
-            <CardHeader>
+            <div>
               <Link
                 href={`/detail/${slashEncoding(pkg.name)}`}
-                className="text-lg font-semibold text-primary-40"
+                className="text-2xl font-semibold text-primary-40"
                 onClick={resetSearchQuery}
               >
                 {pkg.name || 'Unknown Package'}
               </Link>
-            </CardHeader>
-            <CardContent>
-              <p className="text-surface-white whitespace-normal">
+            </div>
+            <div className="mt-4">
+              <p className="text-surface-white text-base whitespace-normal h-[72px] line-clamp-3">
                 {pkg.description || 'No description available'}
               </p>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 mt-2">
                 {(pkg.publisher?.email || pkg.author?.email) && (
                   <>
                     <Image
                       src={getPublisherAvatarUrl(pkg.publisher?.email || pkg.author?.email || '')}
                       alt={pkg.publisher?.username || pkg.author?.name || 'Unknown'}
-                      width={18}
-                      height={18}
-                      className="rounded-full"
+                      width={15.562}
+                      height={15.562}
+                      className="rounded-full mt-2"
                       onClick={() =>
                         handleProfileClick(pkg.publisher?.username || pkg.author?.name || 'Unknown')
                       }
                     />
-                    <p className="text-sm text-surface-medium">
+                    <p className="text-base mt-2 text-surface-medium">
                       {pkg.publisher?.username !== 'Unknown' ? pkg.publisher?.username : ''}
                       {pkg.publisher?.username !== 'Unknown' && pkg.author?.name !== 'Unknown'
                         ? ' · '
@@ -67,8 +67,8 @@ export default function PopularPackageCarousel({ packages }: { packages: Popular
                   </>
                 )}
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         ))}
       </div>
       <ScrollBar orientation="horizontal" />

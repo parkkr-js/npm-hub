@@ -3,12 +3,14 @@
 
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { searchResultsAtom } from '@/store/atoms';
 import { keywordFilteredResultsSelector } from '@/store/selectors';
 import { SearchResultList } from './SearchResultList';
 import type { SearchResultPackageInfo } from '@/types/package';
+import { PackageCardSkeleton } from '../skeletons/PopularPackageCardSkeleton';
+import { PackageSearchSkeleton } from '../skeletons/PackageSearchSkeleton';
 
 interface SearchResultsWrapperProps {
   initialResults: SearchResultPackageInfo[];
@@ -22,8 +24,15 @@ export function SearchResultsWrapper({ initialResults }: SearchResultsWrapperPro
     setSearchResults(initialResults);
   }, [initialResults, setSearchResults]);
 
-  // const memoizedResults = useMemo(() => sortedResults, [sortedResults]);
   const memoizedResults = useMemo(() => keywordFilteredResults, [keywordFilteredResults]);
 
-  return <SearchResultList results={memoizedResults} />;
+  return (
+    <div
+      className="space-y-4 h-[calc(100vh-2rem)] overflow-y-auto pr-4
+  [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+      data-testid="search-results"
+    >
+      <SearchResultList results={memoizedResults} />;
+    </div>
+  );
 }

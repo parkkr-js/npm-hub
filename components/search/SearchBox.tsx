@@ -38,7 +38,6 @@ export default function SearchBox() {
             setSuggestions(results);
           })
           .catch((error) => {
-            console.error('Search failed:', error);
             setSuggestions([]);
           });
       });

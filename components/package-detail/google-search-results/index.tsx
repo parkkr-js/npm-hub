@@ -6,6 +6,7 @@ import { SearchResult, SearchResultsProps } from '@/types/google-search';
 import { ExternalLink, Image as ImageIcon } from 'lucide-react';
 import Image from 'next/image';
 import { fetchGoogleSearch } from '@/app/api/google-search/action';
+import { GoogleSearchResultSkeleton } from '@/components/skeletons/GoogleSearchSkeleton';
 
 export function GoogleSearchResults({ packageName }: SearchResultsProps) {
   const [results, setResults] = useState<SearchResult[]>([]);
@@ -38,23 +39,8 @@ export function GoogleSearchResults({ packageName }: SearchResultsProps) {
       });
     }
   };
-
   if (isLoading) {
-    return (
-      <div className="space-y-4">
-        {[...Array(3)].map((_, i) => (
-          <Card key={i} className="p-4 animate-pulse">
-            <div className="flex items-start gap-4">
-              <div className="w-24 h-24 bg-gray-200 rounded flex-shrink-0" />
-              <div className="flex-grow">
-                <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
-                <div className="h-3 bg-gray-200 rounded w-1/2" />
-              </div>
-            </div>
-          </Card>
-        ))}
-      </div>
-    );
+    return <GoogleSearchResultSkeleton />;
   }
 
   if (error) {
@@ -70,7 +56,7 @@ export function GoogleSearchResults({ packageName }: SearchResultsProps) {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="bg-secondary-90 w-80 max-h-[560px] flex flex-col rounded-[20px]">
+      <div className="bg-secondary-90 w-80 max-h-[460px] flex flex-col rounded-[20px]">
         <div>
           <p className="ml-8 mt-6 text-xl font-semibold text-[#F5F6F8]">Related search</p>
           <p className="ml-8 text-xs font-normal text-secondary-40">
