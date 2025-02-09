@@ -1,31 +1,9 @@
 'use client';
 
 import { RecoilRoot } from 'recoil';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-
-let apiCallCount = 0;
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000, // 데이터 신선도 유지
-      gcTime: 5 * 60 * 1000, // 캐시 유지 시간
-      retry: 2,
-      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
-      refetchOnWindowFocus: false,
-    },
-  },
-});
 
 export default function ClientRoot({ children }: { children: React.ReactNode }) {
-  return (
-    <RecoilRoot>
-      <QueryClientProvider client={queryClient}>
-        {children}
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </RecoilRoot>
-  );
+  return <RecoilRoot>{children}</RecoilRoot>;
 }
 
 /*

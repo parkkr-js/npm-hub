@@ -196,7 +196,12 @@ export async function getSearchResultPackages(query: string): Promise<SearchResu
         } else {
           console.error('Unexpected error:', error);
         }
-        return [];
+        return [
+          {
+            package: { name: 'error', description: error },
+            score: { final: 0, detail: { popularity: 0 } },
+          },
+        ];
       }
     })();
 

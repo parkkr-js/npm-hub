@@ -43,7 +43,7 @@ export async function fetchReadme(packageName: string): Promise<{
     const readmeText = await readmeResponse.text();
     const processedReadme = processReadmeImages(readmeText);
 
-    await markdownCache.set(cacheKey, processedReadme);
+    markdownCache.set(cacheKey, processedReadme);
     return { readme: processedReadme };
   } catch (err) {
     return {
