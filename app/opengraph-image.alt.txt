@@ -1,0 +1,1 @@
+NPM Hub - Your Smart Package Analyzer. Discover and analyze NPM packages with comprehensive insights including download statistics, Google Trends, and GitHub metrics. Make informed decisions with instant access to package analytics, dependencies, and community trends. Simplify your package selection process with our intuitive visualization tools.

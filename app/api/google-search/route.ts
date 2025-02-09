@@ -5,6 +5,16 @@ import { GoogleSearchItem } from '@/types/google-search';
 const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
 const GOOGLE_CX_ID = process.env.GOOGLE_CX_ID;
 
+interface SearchParams {
+  key: string;
+  cx: string;
+  q: string;
+  num: string;
+  filter: number;
+  gl: string;
+  hl: string;
+}
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -18,15 +28,15 @@ export async function GET(request: Request) {
     if (!GOOGLE_API_KEY || !GOOGLE_CX_ID) {
       throw new Error('Missing Google API configuration');
     }
-    console.log(query);
+
     const searchUrl = new URL('https://customsearch.googleapis.com/customsearch/v1');
-    const params = {
+    
+    const params : SearchParams = {
       key: GOOGLE_API_KEY,
       cx: GOOGLE_CX_ID,
       q: query,
       num: '5',
       filter: 0,
-
       gl: 'kr',
       hl: 'ko',
     };
