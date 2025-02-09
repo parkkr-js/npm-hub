@@ -27,16 +27,16 @@ export const metadata: Metadata = {
     telephone: false,
   },
   alternates: {
-    canonical: 'https://your-domain.com',
+    canonical: 'https://npmhub.vercel.app',
   },
   openGraph: {
     title: 'NPM Hub - Your Smart Package Analytics Platform',
     description: 'Analyze NPM packages with download stats, Google Trends data, and GitHub metrics. Make informed package decisions with comprehensive analytics and visualizations.',
-    url: 'https://your-domain.com',
+    url: 'https://npmhub.vercel.app',
     siteName: 'NPM Hub',
     images: [
       {
-        url: 'https://your-domain.com/opengraph-image.png',
+        url: 'https://npmhub.vercel.app/opengraph-image.png',
         width: 1200,
         height: 630,
         alt: 'NPM Hub - Package Analytics Dashboard',
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'NPM Hub - Package Analytics Made Simple',
     description: 'Find the perfect NPM packages with comprehensive analytics, trends, and insights.',
-    images: ['https://your-domain.com/twitter-image.png'],
+    images: ['https://npmhub.vercel.app/twitter-image.png'],
     creator: '@npmhub',
   },
   verification: {
