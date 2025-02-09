@@ -12,8 +12,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: [
           '/',              // 메인 페이지
           '/search',        // 검색 페이지
-          '/packages/*',    // 패키지 상세 페이지
-          '/trending',      // 트렌딩 페이지
+          '/detail/*',      // 패키지 상세 페이지 (경로 수정)
         ],
         disallow: [
           '/api/*',         // API 엔드포인트 제외
@@ -27,7 +26,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: [
           '/',
           '/search',
-          '/packages/*',
+          '/detail/*',      // 패키지 상세 페이지 (경로 수정)
         ],
         disallow: [
           '/api/*',
