@@ -9,7 +9,7 @@ interface LayoutProps {
 export async function generateMetadata({ params }: LayoutProps): Promise<Metadata> {
   const packageName = params.package;
   const title = `${packageName} - NPM Package Trends`;
-  const description = `Analyze trends and popularity data for the ${packageName} npm package including Google Trends data, related topics, and queries.`;
+  const description = `111Analyze trends and popularity data for the ${packageName} npm package including Google Trends data, related topics, and queries.`;
 
   return {
     title,
