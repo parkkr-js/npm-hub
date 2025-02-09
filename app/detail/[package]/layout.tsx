@@ -13,6 +13,7 @@ export async function generateMetadata({ params }: LayoutProps): Promise<Metadat
   return {
     title,
     description,
+    keywords: ['npm', 'package', 'trends', 'popularity', 'google trends', 'related topics', 'queries'],
     openGraph: {
       title,
       description,
