@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     creator: '@npmhub',
   },
   verification: {
-    google: 'your-google-verification-code',
+    google: 'KKAVIyXJmhqKL0jj2c6OT8mUawJAktjzV88OUMnCm_s', 
   },
   category: 'Technology',
  };
