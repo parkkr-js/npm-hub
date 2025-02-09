@@ -1,6 +1,6 @@
 export function PackageCardSkeleton({ count = 4 }: { count: number }) {
   return (
-    <div className="flex space-x-4 pb-4">
+    <div className="flex space-x-4 pb-4 animate-pulse">
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={`skeleton-${i}`}

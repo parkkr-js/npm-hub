@@ -15,7 +15,7 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { MarkDownProps } from '@/types/mark-down';
 import { fetchReadme } from '@/app/api/mark-down/action';
 import { Card } from '@/components/ui/card';
-import MarkdownSkeleton from '@/components/skeletons/MarkDownSkeleton';
+import { MarkDownSkeleton } from '@/components/skeletons/MarkDownSkeleton';
 
 export default function Markdown({ packageName }: MarkDownProps) {
   const [readme, setReadme] = useState<string>('');
@@ -39,7 +39,7 @@ export default function Markdown({ packageName }: MarkDownProps) {
   }, [packageName]);
 
   if (isLoading) {
-    return <MarkdownSkeleton />;
+    return <MarkDownSkeleton />;
   }
 
   if (error) {

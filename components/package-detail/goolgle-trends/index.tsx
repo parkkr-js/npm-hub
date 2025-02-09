@@ -63,39 +63,13 @@ export function GoogleTrends({ packageName }: GoogleTrendsProps) {
     return max;
   }, [trendsData]);
 
-  if (isLoading) {
-    return <GoogleTrendsSkeleton />;
-  }
-
-  // if (error) {
-  //   return (
-  //     <div className="p-4 text-red-500">
-  //       {error?.message}
-  //       <button
-  //         onClick={() => {
-  //           setIsLoading(true);
-  //           setError(null);
-  //           fetchGoogleTrends(packageName)
-  //             .then((data) => {
-  //               setTrendsData(data);
-  //               if (data?.interest?.[53]?.value) {
-  //                 setGoogleTrends(data.interest[53].value[0]);
-  //               }
-  //             })
-  //             .catch((err) => setError(err instanceof Error ? err : new Error('재시도 실패')))
-  //             .finally(() => setIsLoading(false));
-  //         }}
-  //         className="ml-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-  //       >
-  //         재시도
-  //       </button>
-  //     </div>
-  //   );
-  // }
   if (error) {
     <div className="w-[785px] bg-secondary-90 rounded-[20px] p-6 mb-6">
       <p className="text-xl font-semibold mb-2 text-[#ff000083]">Soon, It will be back.</p>
     </div>;
+  }
+  if (isLoading) {
+    return <GoogleTrendsSkeleton />;
   }
 
   return (

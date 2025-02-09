@@ -53,15 +53,15 @@ export function DetailPackage({ result }: DetailPackageItemProps) {
               <p className="text-4xl font-semibold text-primary-50">{pkg.name}</p>
             </div>
             <div
-              className={`mt-9 relative ${isExpanded ? 'h-auto min-h-[45px]' : 'h-[45px] overflow-hidden line-clamp-2'}`}
+              className={`flex mt-9 relative  ${isExpanded ? 'h-auto min-h-[45px]' : 'h-[45px] overflow-hidden line-clamp-2'}`}
             >
-              <p className="w-[450px] text-surface-white">{pkg.description}</p>
+              <div className="w-[450px] text-surface-white ">{pkg.description}</div>
               {pkg.description.length > 100 && (
                 <button
                   onClick={() => setIsExpanded(!isExpanded)}
-                  className="absolute bottom-0 right-0  text-secondary-60 transition-colors"
+                  className="text-secondary-60 w-8 transition-colors"
                 >
-                  {isExpanded ? '접기' : '더보기'}
+                  {isExpanded ? 'less' : 'more'}
                 </button>
               )}
             </div>
