@@ -1,11 +1,11 @@
-import { MetadataRoute } from 'next'
+import type { MetadataRoute } from 'next'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://npmhub.vercel.app'; 
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://npmhub.vercel.app'
 
   const staticPages: MetadataRoute.Sitemap = [
     {
-      url: `${baseUrl}`,  // 템플릿 리터럴 사용
+      url: `${baseUrl}`,
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 1.0
@@ -17,12 +17,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8
     },
     {
-      url: `${baseUrl}/trending`,
+      url: `${baseUrl}/detail/[package]`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.7
+    },
+    {
+      url: `${baseUrl}/search/[query]`,
       lastModified: new Date(),
       changeFrequency: 'daily',
-      priority: 0.9
+      priority: 0.6
     }
-  ];
+  ]
 
-  return staticPages;
+  return staticPages
 }
