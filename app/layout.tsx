@@ -5,6 +5,16 @@ import ClientLayout from '@/components/layout/ClientLayout';
 import ClientRoot from '@/components/ClientRoot';
 
 export const metadata: Metadata = {
+  appleWebApp: {
+    title: 'NPM Hub',
+    statusBarStyle: 'default',
+  },
+  applicationName: 'NPM Hub',
+  manifest: '/manifest.json',
+  icons: {
+    icon: '/icon.png',
+    apple: '/apple-icon.png',
+  },
   title: 'NPM Hub - NPM Package Search & Analytics Platform',
   description: 'Discover, analyze, and compare NPM packages with real-time analytics, download trends, GitHub metrics, and dependency insights. Make data-driven decisions for your JavaScript and TypeScript projects with comprehensive package statistics and visualization tools.',
   keywords: [
