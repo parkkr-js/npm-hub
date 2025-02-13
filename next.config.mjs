@@ -14,6 +14,22 @@ const nextConfig = {
       ],
     },
 
+    async redirects() {
+      return [
+        {
+          source: '/:path*',
+          has: [
+            {
+              type: 'host',
+              value: 'www.npmhub.vercel.app',
+            },
+          ],
+          destination: 'https://npmhub.vercel.app/:path*',
+          permanent: true, 
+        },
+      ];
+    },
+
 };
 
 export default nextConfig;
